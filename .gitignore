@@ -1,0 +1,10 @@
+# dependencies
+node_modules/
+
+# build output (built by GitHub Actions)
+dist/
+
+# logs / local
+npm-debug.log*
+*.log
+.DS_Store
