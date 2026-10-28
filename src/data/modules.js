@@ -354,7 +354,7 @@ export const modules = [
       14
     ],
     "file": "10 การติดตั้ง Solar Cell.pdf",
-    "document": "/resources/module-10-installation-maintenance.pdf"
+    "videoId": "d1RhzLTc57I"
   },
   {
     "id": 11,
