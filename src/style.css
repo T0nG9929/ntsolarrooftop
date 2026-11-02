@@ -20,6 +20,12 @@
 .welcome-video-visual{background:#0b1d2b!important;box-shadow:0 20px 50px #0b1d2b20;container-type:size}
 .welcome-video-visual:before{display:none}
 .welcome-video{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);border:0;pointer-events:none}
+.hero-video-art{background:#081c2b!important;box-shadow:0 18px 45px #071c2b24;container-type:size}
+.hero-video-art:before,.hero-video-art:after{display:none}
+.hero-video{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);border:0;pointer-events:none}
+.hero-video-shade{position:absolute;inset:0;background:linear-gradient(180deg,#071c2c16 20%,#071c2c65 100%);pointer-events:none}
+.hero-video-art .float-tag,.hero-video-art .hero-art-label{z-index:2}
+.hero-video-art .hero-art-label{color:#fff;text-shadow:0 1px 5px #0009}
 .welcome-photo-shade{position:absolute;inset:0;background:linear-gradient(180deg,#071c2c0b 25%,#071c2ccf 100%)}
 .welcome-video-visual .welcome-chip{z-index:2;text-decoration:none}
 .welcome-video-visual .chip-panels{left:17px;top:17px}

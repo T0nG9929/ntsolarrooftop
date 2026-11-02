@@ -53,9 +53,8 @@ function render(){
           <div class="hero-actions"><a class="btn btn-dark" href="#path">สำรวจ 11 โมดูล <span>↓</span></a><a class="btn btn-outline" href="#module12">เข้าสู่ 3D Learning Lab <span>↗</span></a></div>
           <div class="hero-meta"><span><i class="meta-check">✓</i> เรียนรู้เป็นลำดับ</span><span><i class="meta-check">✓</i> ใช้ได้ทั้งคอมพิวเตอร์และมือถือ</span></div>
         </div>
-        <div class="hero-art" aria-label="ภาพประกอบระบบโซลาร์บนหลังคา">
-          <div class="sun-disc"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-          <div class="solar-house"><div class="roof"><div class="panel-grid">${Array.from({length:18},(_,i)=>'<span></span>').join('')}</div></div><div class="house-front"><div class="window"></div><div class="door"></div></div><div class="house-side"></div><div class="ground"></div></div>
+        <div class="hero-art hero-video-art" aria-label="วิดีโอระบบ Solar Rooftop">
+          <iframe class="hero-video" src="https://www.youtube-nocookie.com/embed/s_gA25jyk_c?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=s_gA25jyk_c&amp;controls=0&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" title="วิดีโอระบบ Solar Rooftop" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" aria-hidden="true" tabindex="-1"></iframe><div class="hero-video-shade"></div>
           <div class="float-tag tag-energy"><span class="tag-icon">ϟ</span><span><b>Solar Energy</b><small>Clean · Smart · Future</small></span></div>
           <div class="float-tag tag-3d"><span class="tag-cube">◇</span><span><b>3D Learning Lab</b><small>AR / VR Ready</small></span></div>
           <div class="hero-art-label">POWERING KNOWLEDGE FOR A SUSTAINABLE FUTURE</div>
