@@ -17,17 +17,17 @@
 @media(max-width:650px){.welcome-screen{padding:16px 16px 18px}.welcome-tag{font-size:7px;letter-spacing:.5px}.welcome-top .brand small{font-size:7px}.welcome-content{grid-template-columns:1fr;gap:22px;padding:35px 0 22px}.welcome-copy h1{font-size:39px}.welcome-lead{font-size:12px}.welcome-purpose{margin-top:21px}.welcome-visual{height:270px}.welcome-house{transform:translate(-50%,-45%) scale(.9)}.welcome-info-grid{grid-template-columns:1fr;gap:8px}.welcome-info-grid article{min-height:0;padding:12px}.welcome-info-grid p{font-size:10px}.welcome-bottom{flex-direction:column;gap:4px}}
 
 /* LLK_SolarAR integration: use the supplied NT site photo and real GLB model */
-.welcome-photo-visual{background:#0b1d2b!important;box-shadow:0 20px 50px #0b1d2b20}
-.welcome-photo-visual:before{display:none}
-.welcome-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.welcome-video-visual{background:#0b1d2b!important;box-shadow:0 20px 50px #0b1d2b20;container-type:size}
+.welcome-video-visual:before{display:none}
+.welcome-video{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);border:0;pointer-events:none}
 .welcome-photo-shade{position:absolute;inset:0;background:linear-gradient(180deg,#071c2c0b 25%,#071c2ccf 100%)}
-.welcome-photo-visual .welcome-chip{z-index:2;text-decoration:none}
-.welcome-photo-visual .chip-panels{left:17px;top:17px}
-.welcome-photo-visual .chip-panels b{font-size:10px}
-.welcome-photo-visual .welcome-ar-chip{right:14px;bottom:42px;left:auto;top:auto;border-color:#f6c400;background:#f6c400;color:#0b1d2b}
-.welcome-photo-visual .welcome-ar-chip b{color:#0b1d2b}
-.welcome-photo-visual .welcome-ar-chip small{color:#36454c}
-.welcome-photo-visual .welcome-visual-caption{color:#fff;z-index:2;text-shadow:0 1px 5px #0009}
+.welcome-video-visual .welcome-chip{z-index:2;text-decoration:none}
+.welcome-video-visual .chip-panels{left:17px;top:17px}
+.welcome-video-visual .chip-panels b{font-size:10px}
+.welcome-video-visual .welcome-ar-chip{right:14px;bottom:42px;left:auto;top:auto;border-color:#f6c400;background:#f6c400;color:#0b1d2b}
+.welcome-video-visual .welcome-ar-chip b{color:#0b1d2b}
+.welcome-video-visual .welcome-ar-chip small{color:#36454c}
+.welcome-video-visual .welcome-visual-caption{color:#fff;z-index:2;text-shadow:0 1px 5px #0009}
 .btn-ar-welcome{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e4c400;color:#172833;text-decoration:none}
 .btn-ar-welcome:hover{background:#fff7c7}
 .three-stage{position:relative;overflow:hidden;touch-action:pan-y}
@@ -36,4 +36,4 @@
 .model-loading{position:absolute;left:12px;bottom:12px;padding:7px 10px;border-radius:8px;background:#071c2ccc;color:#fff;font-size:10px;pointer-events:none}
 .stage-fallback{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;color:#e6edf2;background:#101f2d}
 .stage-fallback b{font-size:14px}.stage-fallback p{max-width:360px;font-size:11px;line-height:1.8;color:#b6c6d1}.stage-fallback a{color:#f6c400;font-size:11px;font-weight:700}
-@media(max-width:650px){.welcome-actions .btn-ar-welcome{padding:12px 14px}.welcome-photo-visual{height:270px}.welcome-photo-visual .chip-panels{left:10px;top:10px}.welcome-photo-visual .welcome-ar-chip{right:10px;bottom:38px;max-width:78%}.welcome-photo-visual .welcome-visual-caption{font-size:6px;letter-spacing:.5px}}
+@media(max-width:650px){.welcome-actions .btn-ar-welcome{padding:12px 14px}.welcome-video-visual{height:270px}.welcome-video-visual .chip-panels{left:10px;top:10px}.welcome-video-visual .welcome-ar-chip{right:10px;bottom:38px;max-width:78%}.welcome-video-visual .welcome-visual-caption{font-size:6px;letter-spacing:.5px}}
