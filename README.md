@@ -1,62 +1,137 @@
-# NT Solar Academy — Solar Rooftop Learning Platform
+# NT Solar Academy & Solar Rooftop Learning Lab
 
-เว็บต้นแบบสำหรับพัฒนาต่อด้วย Node.js + Vite + JavaScript ES Modules และ Three.js โดยใช้สีเหลือง NT (#F6C400) กับ Navy เป็นสีหลัก อ้างอิงโครงสร้างการเรียนรู้จาก `Solar-Academy3D.html` ที่ให้ไว้
+**Unified Learning & Preliminary Engineering Platform**  
+*National Telecom Public Company Limited (NTPLC)*
 
-## สิ่งที่มีในต้นแบบ
-- หน้าแรกสไตล์ NTPLC และรองรับมือถือ/เดสก์ท็อป
-- เส้นทางการเรียนรู้ 10 โมดูลพื้นฐาน ตามชื่อ/เป้าหมายจากโครงสร้างต้นฉบับ
-- โมดูล 11 ใช้โมเดลสถานี NT จากซอร์ส LLK_SolarAR (`public/models/LLK_exchange_site.glb`) แสดงแบบ 3 มิติด้วย Three.js และหมุน/ซูมได้
-- หน้าแนะนำใช้ภาพสถานี NT ที่ผู้ใช้ให้มา (`public/images/nt-solar-rooftop-station.jpg`)
-- ปุ่มเปิด LLK_SolarAR เชื่อมตรงไปยัง https://solar-ar-llk.netlify.app/ ทั้งหน้าแนะนำ โมดูล 11 และส่วนท้ายเว็บไซต์
-- โมเดล 3D ใช้เพื่อสำรวจและเรียนรู้เบื้องต้น ไม่ใช่แบบจำลองวิศวกรรมสำหรับออกแบบติดตั้งจริง
-- ลิงก์เครื่องมือจำลองจริงภายนอก แก้ไข URL ได้จาก `src/data/simulators.js`
-- เปิดรายละเอียดโมดูลและบันทึกสถานะเรียนจบในเบราว์เซอร์
-- แยกไฟล์ HTML, CSS, JavaScript และข้อมูล เพื่อให้แก้ไขง่ายใน VS Code
+---
 
-## เริ่มใช้งาน
-ต้องติดตั้ง Node.js รุ่น LTS ก่อน
+## ☀️ ภาพรวมระบบที่รวมเป็นหนึ่งเดียว (Unified Platform)
 
+ระบบนี้รวมสองโปรเจกต์สำคัญเข้าด้วยกันเป็น **Single Website, Single Repository, Single Deployment**:
+1. **NT Solar Academy**: แพลตฟอร์มการเรียนรู้พลังงานแสงอาทิตย์ 12 โมดูล พร้อมแบบจำลองสามมิติสถานี NT (Three.js WebGL & AR) และคลังบทความ
+2. **Solar Rooftop Learning Lab**: เครื่องคำนวณและออกแบบระบบโซลาร์เซลล์บนหลังคาระดับ Preliminary Engineering Design พร้อมเครื่องมือคำนวณ Off-grid Battery Lab และแบบทดสอบความรู้ Knowledge Quiz
+
+**Target URL (GitHub Pages):**  
+[https://t0ng9929.github.io/solar-rooftop-learning-lab/](https://t0ng9929.github.io/solar-rooftop-learning-lab/)
+
+---
+
+## 🧭 โครงสร้างเมนูหลัก 6 ส่วน (Phase 4 Navigation)
+
+1. **Home (หน้าแรก)**: แนะนำแพลตฟอร์ม วิสัยทัศน์ ภาพบรรยากาศสถานีจริง NT สถิติระบบ และจุดเริ่มต้นการเรียนรู้
+2. **Articles (คลังบทความ)**: รวบรวมเอกสารวิชาการ มาตรฐานการติดตั้ง และลิงก์คลังบทความ NT Cloud Box
+3. **Solar Calculator (เครื่องคำนวณโซลาร์)**: วิซาร์ด 4 ขั้นตอนสำหรับประเมินขนาดแผง (kWp), จำนวนแผง (CEILING), ขนาด Inverter, สัดส่วน Self-consumption vs Export, ค่าไฟก่อน/หลังติด, และกราฟกระแสเงินสดสะสม 25 ปี
+4. **Solar Learning Lab (เส้นทางการเรียนรู้)**: 12 โมดูลครอบคลุมตั้งแต่อุปกรณ์พื้นฐาน วงจร การป้องกัน การขออนุญาต จนถึงการซ่อมบำรุง พร้อมเอกสาร PDF ดาวน์โหลดและวิดีโอ
+5. **3D Learning (แบบจำลอง 3 มิติ)**: Interactive WebGL Explorer แสดงโมเดลสถานีแลกเปลี่ยน NT (`LLK_exchange_site.glb`) หมุน/ซูม/เต็มจอได้อิสระ พร้อมเชื่อมต่อแอป AR `LLK_SolarAR`
+6. **Knowledge Quiz (แบบทดสอบความรู้)**: ข้อสอบ 5 ข้อประเมินความเข้าใจหลักฟิสิกส์ วิศวกรรม และเศรษฐศาสตร์โซลาร์เซลล์ พร้อมเฉลยละเอียด
+*(พร้อมห้องทดลองระบบ **Off-Grid & Battery Lab** สำหรับจำลองโหลดเครื่องใช้ไฟฟ้าและคำนวณความจุแบตเตอรี่)*
+
+---
+
+## ⚙️ สถาปัตยกรรมทางวิศวกรรม (Software & Calculation Architecture)
+
+```
+nt-solar-academy/
+├── .github/workflows/
+│   └── deploy-pages.yml          # GitHub Actions CI/CD (Test + Build + Deploy to Pages)
+├── docs/
+│   ├── CALCULATION-METHODOLOGY.md # เอกสารสูตรและมาตรฐานอ้างอิง
+│   └── VERIFICATION-REPORT.md     # รายงานผลการสอบทานทางวิศวกรรม
+├── public/
+│   ├── 404.html                  # Single Page App 404 redirect handler สำหรับ GitHub Pages
+│   ├── assets/                   # SVG Diagrams & Vector Illustrations
+│   ├── models/                   # 3D GLB Models (LLK_exchange_site.glb)
+│   └── resources/                # PDF เอกสารการเรียนรู้ 11 โมดูล
+├── src/
+│   ├── data/
+│   │   ├── modules.js            # ข้อมูล 12 โมดูลการเรียนรู้
+│   │   ├── simulators.js         # ลิงก์เครื่องมือจำลองภายนอก
+│   │   └── quiz-data.js          # คลังข้อสอบและคำอธิบายสูตร
+│   ├── engine/                   # Pure Decoupled Calculation Engines (Zero DOM Dependency)
+│   │   ├── solar-engine.js       # Sizing, Panels, Inverter, Roof Area, Generation
+│   │   ├── financial-engine.js   # Energy flows, Tariffs, Payback, 25-yr Degradation
+│   │   └── offgrid-engine.js     # Load Profile, Battery Sizing, Offgrid Inverter/PV
+│   ├── modules/
+│   │   ├── calculator/           # Solar Rooftop Calculator View, Charts & Reports
+│   │   ├── offgrid/              # Off-grid & Battery Sizing Lab
+│   │   ├── quiz/                 # Knowledge Quiz Interactive View
+│   │   └── three-viewer/         # Three.js 3D WebGL Model Viewer
+│   ├── router/
+│   │   └── router.js             # Native Hash Router (Direct route & Browser History)
+│   ├── main.js                   # Application Entry Point
+│   └── style.css                 # Unified Design System (Navy #071C2C & Yellow #F6C400)
+├── tests/
+│   └── engine.test.js            # 55 Unit Tests สำหรับ Calculation Engine
+├── index.html
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## 📐 มาตรฐานและสูตรคำนวณ (Engineering Standards)
+
+ระบบอ้างอิงมาตรฐานทางวิศวกรรมดังต่อไปนี้:
+- **กรมพัฒนาพลังงานทดแทนและอนุรักษ์พลังงาน (พพ. / DEDE)**: *คู่มือสร้างความรู้ เสริมทักษะโซลาร์รูฟ*
+- **การไฟฟ้านครหลวง (กฟน. / MEA) & การไฟฟ้าส่วนภูมิภาค (กฟภ. / PEA)**: *ระเบียบการเชื่อมต่อระบบโครงข่ายไฟฟ้าสำหรับผู้ผลิตไฟฟ้าพลังงานแสงอาทิตย์บนหลังคา*
+- **IEC 62124**: *Photovoltaic (PV) stand-alone systems – Design verification*
+
+### สรุปสูตรหลัก:
+1. **พลังงานใช้เฉลี่ยต่อวัน:** $E_{\text{daily}} = \frac{E_{\text{monthly}}}{30.4375}$
+2. **ขนาดกำลังผลิต DC ที่ต้องการ:** $P_{\text{required}} = \frac{E_{\text{target}}}{\text{PSH} \times \text{PR}}$
+3. **จำนวนแผง (CEILING):** $N_{\text{panels}} = \left\lceil \frac{P_{\text{required}} \times 1000}{P_{\text{panel\_W}}} \right\rceil$
+4. **กำลังติดตั้งจริง:** $P_{\text{installed}} = \frac{N_{\text{panels}} \times P_{\text{panel\_W}}}{1000} \text{ (kWp)}$
+5. **การแยก Self-consumption:** $E_{\text{self}} = \min(E_{\text{gen}} \times \text{SelfRatio}, E_{\text{consumption}})$
+6. **ผลประหยัดค่าไฟ:** $\text{Savings} = (E_{\text{self}} \times \text{Tariff}_{\text{retail}}) + (E_{\text{export}} \times \text{Tariff}_{\text{export}})$
+7. **กระแสเงินสด 25 ปี:** หักค่าการเสื่อมของแผง $0.50\% \text{ ต่อปี}$ ตามมาตรฐาน Tier-1 Monocrystalline
+8. **ความจุแบตเตอรี่ (Off-Grid):** $C_{\text{battery}} = \frac{E_{\text{load}} \times \text{Autonomy}}{V_{\text{system}} \times \text{DoD} \times \eta_{\text{battery}} \times \eta_{\text{inverter}}}$
+
+---
+
+## 🚀 การติดตั้งและเริ่มใช้งานในเครื่อง (Local Development)
+
+### 1. ติดตั้ง Dependencies
 ```bash
 npm install
+```
+
+### 2. รัน Unit Tests เพื่อทดสอบความถูกต้องของสูตรคำนวณ
+```bash
+npm test
+```
+*(ระบบจะรันการตรวจสอบสูตรทั้ง 55 รายการ และต้องผ่าน 100%)*
+
+### 3. รัน Development Server
+```bash
 npm run dev
 ```
-จากนั้นเปิด URL ที่ Vite แสดงใน Terminal (โดยทั่วไปคือ `http://localhost:5173`)
+เปิดบราวเซอร์ที่ `http://localhost:5173/`
 
-สร้างไฟล์สำหรับนำขึ้นเซิร์ฟเวอร์:
-
+### 4. Build สำหรับ Production
 ```bash
 npm run build
-npm run preview
 ```
+ผลลัพธ์จะถูกคอมไพล์ลงในโฟลเดอร์ `dist/` พร้อมไฟล์ `404.html` และ Relative Assets ที่พร้อม Deploy บน GitHub Pages ทันที
 
-## จุดที่แก้ไขได้ง่าย
-- ชื่อ/เป้าหมาย/เนื้อหาแต่ละโมดูล: `src/data/modules.js`
-- ลิงก์แพลตฟอร์มจำลองภายนอก: `src/data/simulators.js`
-- สีและการจัดหน้า: `src/style.css` (ตัวแปรสีอยู่ส่วนต้นไฟล์)
-- การทำงานและการแสดงผล: `src/main.js`
-- ภาพสถานี NT: `public/images/nt-solar-rooftop-station.jpg`
-- โมเดล GLB จาก LLK_SolarAR: `public/models/LLK_exchange_site.glb`
-- ปลายทาง AR หลัก: `https://solar-ar-llk.netlify.app/`
+---
 
-## ลิงก์จำลองที่ใส่ไว้
-- SvetGrid: https://svetgrid.com/
-- Sun Sandbox: https://sunsandbox.com/
-- PVAlign: https://pvalign.com/simulator/
-- QuantumX: https://www.quantumxrd.com/simulator
-- 360Configurator: https://www.360configurator.com/configurators/solar
-- Open-source Solar PV 3D Simulator: https://github.com/KaranSinghBisht/solar-pv-simulator
-- งานวิจัย Solar Energy Education through VR (อ้างอิงแนวทาง ไม่ใช่ตัว simulator ที่เปิดใช้งานโดยตรง): https://researchwith.njit.edu/en/publications/solar-energy-education-through-a-cloud-based-desktop-virtual-real/
+## 🌐 การ Deploy ขึ้น GitHub Pages
 
-**ข้อจำกัด:** ลิงก์ภายนอกส่วนใหญ่เป็นเครื่องมือ 3D/interactive simulation ไม่ได้ยืนยันว่ารองรับ AR หรือแว่น VR โดยตรง จึงระบุประเภทไว้ชัดเจนเพื่อไม่ให้ผู้เรียนเข้าใจผิด และสามารถเปลี่ยนเป็นแพลตฟอร์ม AR/VR ของ NT เมื่อพร้อมใช้งาน
-
-
-## หน้าแนะนำก่อนเข้าเรียน
-เมื่อเปิดเว็บไซต์จะพบหน้าแนะนำแพลตฟอร์มก่อน โดยสรุปวัตถุประสงค์ รูปแบบการเรียนรู้ กลุ่มผู้เรียนเป้าหมาย และจุดเด่นของบทเรียน กด “เข้าสู่แพลตฟอร์มการเรียนรู้” เพื่อไปยังเว็บไซต์หลักเดิม หรือกด “เปิด LLK_SolarAR” เพื่อเข้าสู่ AR ได้โดยตรง หน้าโมดูลและรูปแบบเดิมยังคงอยู่
-
-
-## การเชื่อมต่อ LLK_SolarAR (รุ่นที่ต่อยอด)
-- โมเดล 3D โหลดด้วย `GLTFLoader` จากไฟล์ใน `public/models/LLK_exchange_site.glb` โดยตรง ไม่ใช่โมเดลบ้านตัวอย่างที่สร้างด้วย primitive geometry
-- ลากเมาส์/นิ้วบนพื้นที่ 3D เพื่อหมุนมุมมอง และใช้ล้อเมาส์เพื่อซูมบนเดสก์ท็อป
-- ปุ่ม AR เปิดเว็บไซต์เดิมในแท็บใหม่ เพื่อไม่ให้ผู้เรียนสูญเสียหน้าเรียนรู้
-- หากเปิดจากคอมพิวเตอร์และ AR แนะนำให้ใช้มือถือ ให้สแกน QR Code ตามที่เว็บไซต์ AR แสดง (ขึ้นกับการทำงานของเว็บไซต์ปลายทาง)
-- หากโมเดลไม่โหลด ให้ตรวจสอบว่ามีไฟล์ GLB อยู่ที่ `public/models/LLK_exchange_site.glb` และเปิดเว็บผ่าน Vite ไม่ใช่เปิด `index.html` โดยตรง
+1. ตั้งค่า Remote Repository ไปยัง `solar-rooftop-learning-lab`:
+   ```bash
+   git remote set-url origin https://github.com/T0nG9929/solar-rooftop-learning-lab.git
+   ```
+2. Commit และ Push ขึ้น branch `main`:
+   ```bash
+   git add .
+   git commit -m "Merge NT Solar Academy and Solar Rooftop Learning Lab into unified platform"
+   git push -u origin main
+   ```
+3. GitHub Actions ใน `.github/workflows/deploy-pages.yml` จะทำการ:
+   - ตรวจสอบโค้ด
+   - รัน Unit Tests (`npm test`)
+   - Build Production Artifact (`npm run build`)
+   - Deploy ขึ้น GitHub Pages อัตโนมัติ
+4. บน GitHub Repository Settings -> Pages:
+   - Source: เลือก **GitHub Actions**
+   - URL ของเว็บไซต์: `https://t0ng9929.github.io/solar-rooftop-learning-lab/`

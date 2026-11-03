@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <defs>
+    <linearGradient id="batCardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071C2C"/>
+      <stop offset="60%" stop-color="#0B263B"/>
+      <stop offset="100%" stop-color="#0E4459"/>
+    </linearGradient>
+    <linearGradient id="batCabinet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="chargeLevel" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="240" rx="16" fill="url(#batCardBg)"/>
+
+  <!-- Battery Rack Enclosure -->
+  <g transform="translate(135, 20)">
+    <!-- Main Rack Frame -->
+    <rect x="0" y="0" width="130" height="195" rx="8" fill="url(#batCabinet)" stroke="#334155" stroke-width="2"/>
+
+    <!-- Module 1 (Top) -->
+    <rect x="10" y="15" width="110" height="36" rx="4" fill="#1E293B" stroke="#475569" stroke-width="1.2"/>
+    <circle cx="22" cy="33" r="3" fill="#10B981"/>
+    <circle cx="32" cy="33" r="3" fill="#38B9D3"/>
+    <rect x="42" y="29" width="45" height="8" rx="2" fill="#0F172A"/>
+    <rect x="44" y="31" width="35" height="4" rx="1" fill="url(#chargeLevel)"/>
+    <text x="94" y="35" fill="#94A3B8" font-family="monospace" font-size="7">5 kWh</text>
+
+    <!-- Module 2 (Middle) -->
+    <rect x="10" y="58" width="110" height="36" rx="4" fill="#1E293B" stroke="#475569" stroke-width="1.2"/>
+    <circle cx="22" cy="76" r="3" fill="#10B981"/>
+    <circle cx="32" cy="76" r="3" fill="#38B9D3"/>
+    <rect x="42" y="72" width="45" height="8" rx="2" fill="#0F172A"/>
+    <rect x="44" y="74" width="35" height="4" rx="1" fill="url(#chargeLevel)"/>
+    <text x="94" y="78" fill="#94A3B8" font-family="monospace" font-size="7">5 kWh</text>
+
+    <!-- Module 3 (Bottom) -->
+    <rect x="10" y="101" width="110" height="36" rx="4" fill="#1E293B" stroke="#475569" stroke-width="1.2"/>
+    <circle cx="22" cy="119" r="3" fill="#10B981"/>
+    <circle cx="32" cy="119" r="3" fill="#38B9D3"/>
+    <rect x="42" y="115" width="45" height="8" rx="2" fill="#0F172A"/>
+    <rect x="44" y="117" width="35" height="4" rx="1" fill="url(#chargeLevel)"/>
+    <text x="94" y="121" fill="#94A3B8" font-family="monospace" font-size="7">5 kWh</text>
+
+    <!-- BMS Controller Hub (Bottom) -->
+    <rect x="10" y="145" width="110" height="38" rx="4" fill="#0F172A" stroke="#38B9D3" stroke-width="1.5"/>
+    <text x="20" y="160" fill="#38B9D3" font-family="sans-serif" font-size="8" font-weight="700">SMART BMS · 48V</text>
+    <text x="20" y="172" fill="#10B981" font-family="monospace" font-size="8">SOC 92% · DoD 80%</text>
+  </g>
+
+  <!-- Left Side: Power Flow & Stats -->
+  <g transform="translate(25, 80)">
+    <circle cx="35" cy="35" r="28" fill="#071C2C" stroke="#10B981" stroke-width="2"/>
+    <path d="M 35 18 L 28 36 L 36 36 L 33 52 L 44 32 L 36 32 Z" fill="#F6C400"/>
+    <text x="35" y="78" fill="#CBD5E1" font-family="sans-serif" font-size="9" font-weight="600" text-anchor="middle">ESS STORAGE</text>
+    <text x="35" y="90" fill="#64748B" font-family="sans-serif" font-size="8" text-anchor="middle">LiFePO4 Chemistry</text>
+  </g>
+
+  <!-- Technical Label Pill -->
+  <g transform="translate(24, 28)">
+    <rect width="145" height="26" rx="6" fill="#071C2C" stroke="#10B981" stroke-width="1.2"/>
+    <circle cx="14" cy="13" r="4" fill="#10B981"/>
+    <text x="26" y="17" fill="#FFFFFF" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="0.5">BATTERY STORAGE</text>
+  </g>
+</svg>

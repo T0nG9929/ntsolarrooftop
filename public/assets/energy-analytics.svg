@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <defs>
+    <linearGradient id="anaCardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071C2C"/>
+      <stop offset="60%" stop-color="#0D2E47"/>
+      <stop offset="100%" stop-color="#145374"/>
+    </linearGradient>
+    <linearGradient id="anaLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F6C400"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="240" rx="16" fill="url(#anaCardBg)"/>
+
+  <!-- Analytics Mini Dashboard Representation -->
+  <g transform="translate(40, 65)">
+    <!-- KPI Pill 1 -->
+    <rect x="0" y="0" width="95" height="42" rx="6" fill="#071C2C" stroke="#38B9D3" stroke-width="1"/>
+    <text x="8" y="14" fill="#94A3B8" font-family="sans-serif" font-size="7">MONTHLY SAVINGS</text>
+    <text x="8" y="32" fill="#F6C400" font-family="sans-serif" font-size="14" font-weight="800">฿2,350</text>
+
+    <!-- KPI Pill 2 -->
+    <rect x="110" y="0" width="95" height="42" rx="6" fill="#071C2C" stroke="#10B981" stroke-width="1"/>
+    <text x="118" y="14" fill="#94A3B8" font-family="sans-serif" font-size="7">SIMPLE PAYBACK</text>
+    <text x="118" y="32" fill="#34D399" font-family="sans-serif" font-size="14" font-weight="800">4.8 yrs</text>
+
+    <!-- KPI Pill 3 -->
+    <rect x="220" y="0" width="100" height="42" rx="6" fill="#071C2C" stroke="#F6C400" stroke-width="1"/>
+    <text x="228" y="14" fill="#94A3B8" font-family="sans-serif" font-size="7">SELF CONSUMPTION</text>
+    <text x="228" y="32" fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="800">72.5%</text>
+
+    <!-- Chart Panel -->
+    <rect x="0" y="55" width="320" height="95" rx="8" fill="#071C2C" stroke="#1E3A5F" stroke-width="1.2"/>
+
+    <!-- Grid lines -->
+    <line x1="20" y1="80" x2="300" y2="80" stroke="#1E293B" stroke-dasharray="3 3"/>
+    <line x1="20" y1="105" x2="300" y2="105" stroke="#1E293B" stroke-dasharray="3 3"/>
+    <line x1="20" y1="130" x2="300" y2="130" stroke="#334155"/>
+
+    <!-- Solar Bell Curve Area -->
+    <path d="M 40 130 Q 110 130 160 70 Q 210 130 280 130 Z" fill="#F6C400" opacity="0.18"/>
+    <path d="M 40 130 Q 110 130 160 70 Q 210 130 280 130" fill="none" stroke="#F6C400" stroke-width="2.5"/>
+
+    <!-- Load Demand Flat/Peak Line -->
+    <path d="M 30 115 L 80 110 L 130 95 L 180 100 L 230 92 L 290 88" fill="none" stroke="#38B9D3" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Legend -->
+    <circle cx="100" cy="142" r="3" fill="#F6C400"/>
+    <text x="108" y="145" fill="#CBD5E1" font-family="sans-serif" font-size="7">Solar Yield</text>
+    <circle cx="180" cy="142" r="3" fill="#38B9D3"/>
+    <text x="188" y="145" fill="#CBD5E1" font-family="sans-serif" font-size="7">Load Profile</text>
+  </g>
+
+  <!-- Technical Label Pill -->
+  <g transform="translate(24, 28)">
+    <rect width="145" height="26" rx="6" fill="#071C2C" stroke="#F6C400" stroke-width="1.2"/>
+    <circle cx="14" cy="13" r="4" fill="#F6C400"/>
+    <text x="26" y="17" fill="#FFFFFF" font-family="sans-serif" font-size="11" font-weight="700" letter-spacing="0.5">ENERGY ANALYTICS</text>
+  </g>
+</svg>
