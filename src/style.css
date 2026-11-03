@@ -244,3 +244,6 @@ input,select{color-scheme:dark}
 @media(prefers-reduced-motion:reduce){.module-card,.launcher-card,.resource-card,.article-library-card{transition:none}}
 
 .btn-dark{background:#f6c400;color:#071c2c;border-color:#f6c400}.btn-dark:hover{background:#ffda31;color:#071c2c}.btn-outline{border-color:#35576a;background:#0a2232;color:#e4eef2}.btn-outline:hover{border-color:#44c9ed;background:#103149;color:#fff}
+.lesson-dialog .lesson-goal,.lesson-dialog .lesson-note{padding:16px 18px;border:1px solid #e7cf66;border-radius:11px;background:#fff6cc;color:#071c2c;line-height:1.9}
+.lesson-dialog .lesson-goal>b,.lesson-dialog .lesson-note>b{display:block;color:#071c2c;font-size:12px;font-weight:700}
+.lesson-dialog .lesson-goal>p,.lesson-dialog .lesson-note>p{margin:6px 0 0;color:#183447;font-size:11px;line-height:1.9}
