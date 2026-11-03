@@ -7,7 +7,13 @@ import { getQuizTemplate, QuizController } from './modules/quiz/quiz-view.js';
 import { initThreeViewer } from './modules/three-viewer/viewer.js';
 import { AppRouter } from './router/router.js';
 
-const $ = (s, root = document) => root.querySelector(s);
+const $ = (s, root = document) => {
+  if (typeof s === 'string' && s.startsWith('#') && /^[0-9]/.test(s.slice(1))) {
+    const id = s.slice(1);
+    return root.getElementById ? root.getElementById(id) : root.querySelector(`[id="${id}"]`);
+  }
+  return root.querySelector(s);
+};
 const BASE = import.meta.env.BASE_URL;
 const asset = p => `${BASE}${String(p).replace(/^\/+/, '')}`;
 const progressKey = 'nt-solar-academy-progress-v2';
@@ -53,7 +59,8 @@ function moduleIcon(id) {
 
 function render() {
   if (threeViewerCleanup) {
-    threeViewerCleanup();
+    if (typeof threeViewerCleanup === 'function') threeViewerCleanup();
+    else threeViewerCleanup.cleanup?.();
     threeViewerCleanup = null;
   }
 
@@ -390,6 +397,9 @@ function module12Section() {
                 <button class="model-control model-control-toggle" id="autoRotateToggle" type="button" aria-pressed="true" title="ปิดการหมุนอัตโนมัติ">
                   <span class="control-indicator"></span><span>Auto Rotate</span><b>ON</b>
                 </button>
+                <button class="model-control model-control-toggle is-active" id="hotspotsToggle" type="button" aria-pressed="true" title="เปิด/ปิดจุดชี้ระบุอุปกรณ์ (Hotspots)">
+                  <span class="control-indicator"></span><span>Hotspots</span><b>ON</b>
+                </button>
                 <div class="model-control-group">
                   <button class="model-control model-control-icon" id="zoomOut" type="button" aria-label="ซูมออก" title="ซูมออก (−)">−</button>
                   <button class="model-control model-control-icon" id="zoomIn" type="button" aria-label="ซูมเข้า" title="ซูมเข้า (+)">+</button>
@@ -648,10 +658,11 @@ function initThreePreview() {
   const stage = $('#threeStage');
   if (!stage) return;
 
-  const modelUrl = asset('/models/LLK_exchange_site.glb');
+  const modelUrl = new URL(asset('/models/LLK_exchange_site.glb'), document.baseURI).href;
   const status = $('#modelStatus');
   const controls = {
     auto: $('#autoRotateToggle'),
+    hotspots: $('#hotspotsToggle'),
     zoomIn: $('#zoomIn'),
     zoomOut: $('#zoomOut'),
     reset: $('#resetView'),
@@ -664,8 +675,18 @@ function initThreePreview() {
     stage,
     status,
     controls,
-    section: $('#3d-learning'),
+    section: document.getElementById('3d-learning') || document.getElementById('module12'),
     modelUrl
+  });
+
+  // Link side explorer cards to focus 3D model components
+  document.querySelectorAll('.explorer-card').forEach((card, idx) => {
+    card.addEventListener('click', e => {
+      const hotspotIds = ['pv-modules', 'structure', 'dc-wiring'];
+      if (threeViewerCleanup?.focusHotspot && hotspotIds[idx]) {
+        threeViewerCleanup.focusHotspot(hotspotIds[idx]);
+      }
+    });
   });
 }
 

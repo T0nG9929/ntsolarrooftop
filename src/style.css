@@ -65,9 +65,31 @@
 .three-stage{position:relative;overflow:hidden;touch-action:pan-y}
 .three-stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y}
 .three-stage canvas:active{cursor:grabbing}
-.model-loading{position:absolute;left:12px;bottom:12px;padding:7px 10px;border-radius:8px;background:#071c2ccc;color:#fff;font-size:10px;pointer-events:none}
-.stage-fallback{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;color:#e6edf2;background:#101f2d}
-.stage-fallback b{font-size:14px}.stage-fallback p{max-width:360px;font-size:11px;line-height:1.8;color:#b6c6d1}.stage-fallback a{color:#f6c400;font-size:11px;font-weight:700}
+.model-loading{position:absolute;left:12px;bottom:12px;padding:7px 10px;border-radius:8px;background:#071c2ccc;color:#fff;font-size:10px;pointer-events:none;transition:background .2s,border-color .2s;z-index:6}
+.model-loading.is-error{background:rgba(180,30,30,.88);border:1px solid #e64949;color:#fff}
+.model-loading.is-ready{background:rgba(7,28,44,.85);border:1px solid #1a516e}
+
+/* MODULE 12 Hotspots Overlay */
+.stage-hotspots{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.hotspot-pin{position:absolute;left:0;top:0;pointer-events:auto;transform:translate(-50%,-50%);background:transparent;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;transition:opacity .2s,transform .15s;color:#fff}
+.hotspot-pulse{width:14px;height:14px;border-radius:50%;background:#f6c400;box-shadow:0 0 0 0 rgba(246,196,0,.7);display:block;animation:hotspotPulse 2s infinite;flex:0 0 14px}
+@keyframes hotspotPulse{0%{box-shadow:0 0 0 0 rgba(246,196,0,.75)}70%{box-shadow:0 0 0 12px rgba(246,196,0,0)}100%{box-shadow:0 0 0 0 rgba(246,196,0,0)}}
+.hotspot-badge{background:#071c2c;color:#f6c400;border:1px solid #f6c400;font-weight:800;font-size:9px;padding:2px 5px;border-radius:6px;letter-spacing:.5px}
+.hotspot-name{background:rgba(7,28,44,.88);color:#e6edf2;font-size:9px;font-weight:600;padding:3px 7px;border-radius:6px;border:1px solid #1a435a;backdrop-filter:blur(8px);white-space:nowrap}
+.hotspot-card{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:210px;padding:9px 11px;background:#051724fb;border:1px solid #235875;border-radius:11px;box-shadow:0 12px 30px rgba(0,0,0,.6);text-align:left;pointer-events:auto;z-index:10;backdrop-filter:blur(10px)}
+.hotspot-pin:hover .hotspot-card,.hotspot-pin:focus .hotspot-card{display:block}
+.hotspot-card b{display:block;color:#f6c400;font-size:10px;margin-bottom:3px}
+.hotspot-card p{margin:0 0 5px;font-size:9px;line-height:1.5;color:#bac8d1}
+.hotspot-card .hotspot-action{font-size:8px;color:#49c8f0;font-weight:700}
+
+/* Stage Fallback & Error UI */
+.stage-fallback{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;color:#e6edf2;background:radial-gradient(ellipse at center,#102a3c,#071c2c 85%)}
+.stage-fallback-icon{font-size:34px;margin-bottom:8px;color:#ffcc00}
+.stage-fallback b{font-size:15px;color:#ffdf35;margin-bottom:6px}
+.stage-fallback-msg{max-width:440px;font-size:11px;line-height:1.7;color:#c0d2dc;margin:0 0 10px}
+.stage-error-path{display:block;max-width:500px;padding:6px 12px;background:#051420;border:1px solid #1b455c;border-radius:8px;font-size:10px;color:#8ccbe5;word-break:break-all;margin-bottom:10px}
+.stage-fallback small{color:#8aa1ae;font-size:10px;margin-bottom:16px}
+.stage-fallback-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 @media(max-width:650px){.welcome-actions .btn-ar-welcome{padding:12px 14px}.welcome-video-visual{height:270px}.welcome-video-visual .chip-panels{left:10px;top:10px}.welcome-video-visual .welcome-ar-chip{right:10px;bottom:38px;max-width:78%}.welcome-video-visual .welcome-visual-caption{font-size:6px;letter-spacing:.5px}}
 
 /* MODULE 12 · full-screen interactive learning lab */
