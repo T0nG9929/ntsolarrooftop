@@ -1,0 +1,62 @@
+[
+ {
+  "name": "W1_exterior",
+  "start": 1,
+  "end": 240,
+  "cam": "Cam_W1_exterior"
+ },
+ {
+  "name": "W2_roof_pv",
+  "start": 241,
+  "end": 450,
+  "cam": "Cam_W2_roof_pv"
+ },
+ {
+  "name": "W3_outside",
+  "start": 451,
+  "end": 690,
+  "cam": "Cam_W3_outside"
+ },
+ {
+  "name": "W4_enter",
+  "start": 691,
+  "end": 930,
+  "cam": "Cam_W4_enter"
+ },
+ {
+  "name": "W5_gen_room",
+  "start": 931,
+  "end": 1230,
+  "cam": "Cam_W5_gen_room"
+ },
+ {
+  "name": "W6_back_wall",
+  "start": 1231,
+  "end": 1530,
+  "cam": "Cam_W6_back_wall"
+ },
+ {
+  "name": "W7_enetek",
+  "start": 1531,
+  "end": 1740,
+  "cam": "Cam_W7_enetek"
+ },
+ {
+  "name": "W8_to_telecom",
+  "start": 1741,
+  "end": 1980,
+  "cam": "Cam_W8_to_telecom"
+ },
+ {
+  "name": "W9_telecom",
+  "start": 1981,
+  "end": 2220,
+  "cam": "Cam_W9_telecom"
+ },
+ {
+  "name": "W10_outro",
+  "start": 2221,
+  "end": 2400,
+  "cam": "Cam_W10_outro"
+ }
+]

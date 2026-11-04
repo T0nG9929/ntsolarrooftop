@@ -1,0 +1,149 @@
+{
+ "materials": {
+  "SR_blk_metal": {
+   "albedo": "blk_metal_albedo.jpg",
+   "normal": "n_powder.jpg"
+  },
+  "SR_dark_grey": {
+   "albedo": "dark_grey_albedo.jpg",
+   "normal": "n_powder.jpg"
+  },
+  "SR_rack_grey": {
+   "albedo": "rack_grey_albedo.jpg",
+   "normal": "n_powder.jpg"
+  },
+  "SR_blk_plastic": {
+   "albedo": "blk_plastic_albedo.jpg"
+  },
+  "SR_white_plastic": {
+   "albedo": "white_plastic_albedo.jpg"
+  },
+  "SR_ac_white": {
+   "albedo": "ac_white_albedo.jpg"
+  },
+  "SR_pvc_white": {
+   "albedo": "pvc_white_albedo.jpg"
+  },
+  "SR_pv_back": {
+   "albedo": "pv_back_albedo.jpg"
+  },
+  "SR_batt_case": {
+   "albedo": "batt_case_albedo.jpg"
+  },
+  "SR_grey_panel": {
+   "albedo": "grey_panel_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_light_grey": {
+   "albedo": "light_grey_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_cream": {
+   "albedo": "cream_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_ats_grey": {
+   "albedo": "ats_grey_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_old_ac": {
+   "albedo": "old_ac_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_batt_lid": {
+   "albedo": "batt_lid_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_fm_blue": {
+   "albedo": "fm_blue_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_gen_green": {
+   "albedo": "gen_green_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_gen_blue": {
+   "albedo": "gen_blue_albedo.jpg",
+   "normal": "n_worn.jpg"
+  },
+  "SR_alu": {
+   "albedo": "alu_albedo.jpg",
+   "normal": "n_brushed.jpg"
+  },
+  "SR_silver_panel": {
+   "albedo": "silver_panel_albedo.jpg",
+   "normal": "n_brushed.jpg"
+  },
+  "SR_steel_dark": {
+   "albedo": "steel_dark_albedo.jpg",
+   "normal": "n_brushed.jpg"
+  },
+  "SR_galv": {
+   "albedo": "galv_albedo.jpg",
+   "normal": "n_galv.jpg"
+  },
+  "SR_concrete": {
+   "albedo": "concrete_albedo.jpg",
+   "normal": "n_concrete.jpg"
+  },
+  "SR_ballast": {
+   "albedo": "ballast_albedo.jpg",
+   "normal": "n_concrete.jpg"
+  },
+  "SR_ground": {
+   "albedo": "ground_albedo.jpg",
+   "normal": "n_concrete.jpg"
+  },
+  "SR_wall_white": {
+   "albedo": "wall_white_albedo.jpg",
+   "normal": "n_plaster.jpg"
+  },
+  "SR_tank": {
+   "albedo": "tank_albedo.jpg",
+   "normal": "n_rust_tank.jpg"
+  },
+  "SR_red_steel": {
+   "albedo": "red_steel_albedo.jpg",
+   "normal": "n_rust_red.jpg"
+  },
+  "SR_exhaust_pipe": {
+   "albedo": "exhaust_pipe_albedo.jpg",
+   "normal": "n_rust_pipe.jpg"
+  },
+  "SR_rust": {
+   "albedo": "rust_albedo.jpg",
+   "normal": "n_rust.jpg"
+  },
+  "SR_perf_black": {
+   "albedo": "perf_black_albedo.jpg",
+   "normal": "n_perf.jpg"
+  },
+  "SR_perf_grey": {
+   "albedo": "perf_grey_albedo.jpg",
+   "normal": "n_perf.jpg"
+  },
+  "SR_perf_top": {
+   "albedo": "perf_top_albedo.jpg",
+   "normal": "n_perf.jpg"
+  },
+  "SR_wood": {
+   "albedo": "wood_albedo.jpg",
+   "normal": "n_wood.jpg"
+  },
+  "SR_tape": {
+   "albedo": "tape_albedo.jpg"
+  }
+ },
+ "alias": {
+  "SR_perf_black_side": "SR_perf_black",
+  "SR_perf_grey_side": "SR_perf_grey"
+ },
+ "screens": {
+  "SR_scr_pm": "screen_pm_mdb.jpg",
+  "SR_scr_acmeter": "screen_acmeter.jpg",
+  "SR_scr_smu": "screen_smu01.jpg",
+  "SR_scr_dse": "screen_dse.jpg",
+  "SR_scr_bms": "screen_bms.jpg",
+  "SR_meter_face": "meter_dial.jpg"
+ }
+}

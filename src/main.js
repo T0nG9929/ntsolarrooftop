@@ -5,6 +5,7 @@ import { getCalculatorTemplate, CalculatorController } from './modules/calculato
 import { getOffgridTemplate, OffgridController } from './modules/offgrid/offgrid-view.js';
 import { getQuizTemplate, QuizController } from './modules/quiz/quiz-view.js';
 import { initThreeViewer } from './modules/three-viewer/viewer.js';
+import { solar3DModels, solarModelExplorer } from './data/solar-3d-models.js';
 import { AppRouter } from './router/router.js';
 
 const $ = (s, root = document) => {
@@ -26,32 +27,6 @@ let offgridInstance = null;
 let quizInstance = null;
 
 const categories = ['ทั้งหมด', ...new Set(modules.slice(0, 11).map(m => m.category || 'บทเรียน'))];
-const solarModelExplorer = Object.freeze([
-  {
-    number: '01',
-    english: 'MODEL COMPONENT',
-    title: 'แผง Solar Rooftop',
-    description: 'โมเดล 3D สำหรับศึกษารายละเอียดของแผง Solar Rooftop และส่วนประกอบที่เกี่ยวข้อง',
-    url: 'https://example.com/solar-rooftop/model-component',
-    thumbnail: 'panels'
-  },
-  {
-    number: '02',
-    english: 'SOLAR ROOFTOP STRUCTURE',
-    title: 'โครงสร้าง Solar Rooftop',
-    description: 'โมเดล 3D สำหรับศึกษาระบบโครงสร้างรองรับแผง Solar Rooftop',
-    url: 'https://example.com/solar-rooftop/structure',
-    thumbnail: 'structure'
-  },
-  {
-    number: '03',
-    english: 'SMU01 CABINET',
-    title: 'ตู้ SMU01 พร้อมอุปกรณ์ภายใน',
-    description: 'โมเดล 3D สำหรับศึกษาตู้ SMU01 และอุปกรณ์ภายในตู้',
-    url: 'https://example.com/solar-rooftop/smu01',
-    thumbnail: 'cabinet'
-  }
-]);
 
 function moduleIcon(id) {
   return ['▦', '☀', 'ϟ', '⌁', '⇄', '◈', '▰', '⏻', '⌂', '🔧', '↻', '◇'][id - 1] || '•';
@@ -362,22 +337,22 @@ function moduleCard(m) {
 
 function module12Section() {
   const cards = solarModelExplorer.map(model => `
-    <a class="explorer-card" href="${model.url}" target="_blank" rel="noopener noreferrer" aria-label="เปิดโมเดล ${model.title} ในแท็บใหม่">
+    <button class="explorer-card" type="button" data-model-key="${model.key}" aria-label="เปิดโมเดล 3 มิติ ${model.title}">
       <div class="explorer-card-visual">
         ${modelExplorerThumbnail(model.thumbnail)}
-        <span class="explorer-status">DEMO</span>
+        <span class="explorer-status">3D GLB</span>
       </div>
       <div class="explorer-card-copy">
         <div class="explorer-card-heading">
-          <span class="explorer-model-number">MODEL ${model.number}</span>
-          <span class="explorer-external" aria-hidden="true">↗</span>
+          <span class="explorer-model-number">${model.badge}</span>
+          <span class="explorer-external" aria-hidden="true">⌖</span>
         </div>
         <h3>${model.english}</h3>
         <b>${model.title}</b>
         <p>${model.description}</p>
-        <span class="explorer-open">OPEN MODEL <span aria-hidden="true">↗</span></span>
+        <span class="explorer-open">EXPLORE 3D <span aria-hidden="true">↗</span></span>
       </div>
-    </a>
+    </button>
   `).join('');
 
   return `
@@ -391,7 +366,7 @@ function module12Section() {
               <h2>Solar Rooftop <em>3D Explorer</em></h2>
               <p>3D SOLAR SYSTEM · AR / VR LEARNING LAB</p>
             </div>
-            <p class="module12-lead">สำรวจโมเดลสถานี NT ผ่านการหมุนและซูมอย่างอิสระ ใช้ปุ่ม Focus Model เพื่อจัดโมเดลให้อยู่กลางมุมมอง</p>
+            <p class="module12-lead">สำรวจโมเดลสถานี NT ผ่านการหมุนและซูมอย่างอิสระ ใช้ปุ่ม Focus Model เพื่อจัดโมเดลให้อยู่กลางมุมมอง หรือเลือกโมเดลเจาะลึกจากรายการด้านขวา</p>
           </div>
           <div class="module12-intro-actions">
             <a class="btn btn-yellow" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">เปิด LLK_SolarAR <span>↗</span></a>
@@ -413,6 +388,9 @@ function module12Section() {
               </div>
               <div class="model-loading" id="modelStatus" role="status" aria-live="polite">กำลังโหลดโมเดลสถานี NT…</div>
               <div class="model-controls" aria-label="ตัวควบคุมโมเดล 3 มิติ">
+                <button class="model-control model-control-back" id="backToSite" type="button" title="กลับสู่แบบจำลองสถานีหลัก (LLK Exchange)" style="display:none;">
+                  <span aria-hidden="true">⟵</span><span>ภาพรวมสถานี</span>
+                </button>
                 <button class="model-control model-control-toggle" id="autoRotateToggle" type="button" aria-pressed="true" title="ปิดการหมุนอัตโนมัติ">
                   <span class="control-indicator"></span><span>Auto Rotate</span><b>ON</b>
                 </button>
@@ -450,12 +428,12 @@ function module12Section() {
               <span class="explorer-heading-icon" aria-hidden="true">▱</span>
               <div>
                 <h2 id="explorerTitle">EXPLORE SOLAR COMPONENTS</h2>
-                <p>เลือกโมเดลเฉพาะทางเพื่อเปิดดูตัวอย่าง</p>
+                <p>เลือกโมเดลเฉพาะทางเพื่อเปิดดูโมเดล 3D จริง</p>
               </div>
               <span class="explorer-count">03</span>
             </header>
             <div class="model-explorer-list">${cards}</div>
-            <p class="model-explorer-footnote"><span>i</span> ลิงก์ตัวอย่างสำหรับออกแบบ UI และทดสอบการเชื่อมต่อ</p>
+            <p class="model-explorer-footnote"><span>i</span> คลิกการ์ดอุปกรณ์เพื่อเปิดดูโมเดล 3 มิติเจาะลึกแบบสมจริง</p>
           </aside>
         </div>
 
@@ -679,6 +657,7 @@ function initThreePreview() {
 
   const modelUrl = new URL(asset('/models/LLK_exchange_site.glb'), document.baseURI).href;
   const status = $('#modelStatus');
+  const backBtn = $('#backToSite');
   const controls = {
     auto: $('#autoRotateToggle'),
     hotspots: $('#hotspotsToggle'),
@@ -687,7 +666,20 @@ function initThreePreview() {
     reset: $('#resetView'),
     explore: $('#exploreMode'),
     focus: $('#focusMode'),
-    fullscreen: $('#fullscreenModel')
+    fullscreen: $('#fullscreenModel'),
+    back: backBtn
+  };
+
+  const updateExplorerState = (activeKey) => {
+    document.querySelectorAll('.explorer-card').forEach(card => {
+      const isMatch = card.dataset.modelKey === activeKey;
+      card.classList.toggle('is-active', isMatch);
+      card.setAttribute('aria-pressed', String(isMatch));
+      if (isMatch) card.classList.remove('is-focused');
+    });
+    if (backBtn) {
+      backBtn.style.display = activeKey === 'site' ? 'none' : 'inline-flex';
+    }
   };
 
   threeViewerCleanup = initThreeViewer({
@@ -695,17 +687,26 @@ function initThreePreview() {
     status,
     controls,
     section: document.getElementById('3d-learning') || document.getElementById('module12'),
-    modelUrl
+    modelUrl,
+    onModelChanged: (modelKey, meta) => {
+      updateExplorerState(modelKey);
+    }
   });
 
-  // Link side explorer cards to focus 3D model components
-  document.querySelectorAll('.explorer-card').forEach((card, idx) => {
-    card.addEventListener('click', e => {
-      const hotspotIds = ['pv-modules', 'structure', 'dc-wiring'];
-      if (threeViewerCleanup?.focusHotspot && hotspotIds[idx]) {
-        threeViewerCleanup.focusHotspot(hotspotIds[idx]);
+  // Link side explorer cards to inspect individual 3D component models
+  document.querySelectorAll('.explorer-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.modelKey;
+      if (threeViewerCleanup?.loadModel && key) {
+        threeViewerCleanup.loadModel(key);
       }
     });
+  });
+
+  backBtn?.addEventListener('click', () => {
+    if (threeViewerCleanup?.loadModel) {
+      threeViewerCleanup.loadModel('site');
+    }
   });
 }
 

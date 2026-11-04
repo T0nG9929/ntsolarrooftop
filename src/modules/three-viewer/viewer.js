@@ -1,19 +1,28 @@
 /**
  * NT Solar Academy - Three.js 3D Interactive Viewer Module
- * Loads and renders the GLB model (LLK_exchange_site.glb) with full orbit, touch & keyboard controls,
- * interactive equipment hotspots, and resilient error recovery.
+ * 
+ * Features:
+ * 1. Main Station Site (LLK_exchange_site.glb) & Component Models (PV Array, Structure, SMU01)
+ * 2. Interactive Equipment Hotspots mapped directly to EXPLORE SOLAR COMPONENTS
+ * 3. Full Orbit, Pan, Zoom, Auto-rotate, Keyboard & Touch controls
+ * 4. Memory-managed Model Switching with In-Memory Caching
+ * 5. High-fidelity Realistic Lighting, Materials and Tone Mapping
+ * 6. Resilient Error Handling with Friendly Fallback UI
  */
 
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { solar3DModels } from '../../data/solar-3d-models.js';
 
-export function initThreeViewer({ stage, status, controls, section, modelUrl }) {
+export function initThreeViewer({ stage, status, controls, section, modelUrl, onModelChanged }) {
   if (!stage) return null;
 
   let disposed = false, visible = false, raf = 0, lastFrame = 0, dragging = false;
   let showHotspots = true;
+  let currentModelKey = 'site';
+  let currentModelGroup = null;
   const hotspotMarkers = [];
+  const modelCache = new Map();
 
   const pointerAbort = new AbortController();
   const uiAbort = new AbortController();
@@ -53,12 +62,12 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     message.className = 'stage-fallback-msg';
     message.textContent = 'สาเหตุที่ตรวจพบ: ' + detail;
 
-    const path = document.createElement('code');
-    path.className = 'stage-error-path';
-    path.textContent = 'Model URL: ' + modelUrl;
+    const pathEl = document.createElement('code');
+    pathEl.className = 'stage-error-path';
+    pathEl.textContent = 'Model Key: ' + currentModelKey;
 
     const hint = document.createElement('small');
-    hint.textContent = 'คำแนะนำ: ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต ไฟล์ GLB หรือเปิดดูผ่านลิงก์สำรองด้านล่าง';
+    hint.textContent = 'คำแนะนำ: ตรวจสอบไฟล์ 3D หรือเปิดดูผ่านลิงก์ภายนอกสำรอง';
 
     const actions = document.createElement('div');
     actions.className = 'stage-fallback-actions';
@@ -67,7 +76,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     reloadBtn.type = 'button';
     reloadBtn.className = 'btn btn-yellow';
     reloadBtn.textContent = '↻ ลองโหลดใหม่อีกครั้ง';
-    reloadBtn.addEventListener('click', () => window.location.reload());
+    reloadBtn.addEventListener('click', () => loadModel('site'));
 
     const arLink = document.createElement('a');
     arLink.href = 'https://solar-ar-llk.netlify.app/';
@@ -77,7 +86,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     arLink.textContent = 'เปิด LLK_SolarAR ↗';
 
     actions.append(reloadBtn, arLink);
-    box.append(icon, heading, message, path, hint, actions);
+    box.append(icon, heading, message, pathEl, hint, actions);
 
     if (status) {
       status.textContent = 'โหลดโมเดลไม่สำเร็จ: ' + detail;
@@ -93,7 +102,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#071c2c');
-  const camera = new THREE.PerspectiveCamera(38, Math.max(stage.clientWidth, 1) / Math.max(stage.clientHeight, 1), 0.1, 120);
+  const camera = new THREE.PerspectiveCamera(38, Math.max(stage.clientWidth, 1) / Math.max(stage.clientHeight, 1), 0.1, 140);
   const compact = window.matchMedia('(max-width: 650px)').matches || (navigator.hardwareConcurrency || 8) <= 4;
   let renderer;
 
@@ -108,35 +117,46 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
   renderer.setSize(Math.max(stage.clientWidth, 1), Math.max(stage.clientHeight, 1));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
-  renderer.domElement.setAttribute('aria-label', 'โมเดลสถานี NT แบบสามมิติ กด Tab เพื่อเลือก จากนั้นใช้ปุ่มลูกศรหมุน +/− ซูม R คืนมุมมอง และ F เต็มจอ');
+  renderer.toneMappingExposure = 1.15;
+  renderer.domElement.setAttribute('aria-label', 'โมเดลระบบ Solar Rooftop 3 มิติ ใช้เมาส์ ลากเพื่อหมุน และ Scroll เพื่อซูม');
   renderer.domElement.tabIndex = 0;
   renderer.domElement.setAttribute('role', 'application');
   stage.appendChild(renderer.domElement);
 
   // Lighting Rig
-  scene.add(new THREE.HemisphereLight(0xe8f3ff, 0x52606b, 2.1));
-  const keyLight = new THREE.DirectionalLight(0xfff0c7, 2.8);
-  keyLight.position.set(6, 10, 8);
+  const hemiLight = new THREE.HemisphereLight(0xe8f4ff, 0x3d4e5c, 2.2);
+  scene.add(hemiLight);
+
+  const keyLight = new THREE.DirectionalLight(0xfff3cf, 2.9);
+  keyLight.position.set(7, 12, 9);
   scene.add(keyLight);
-  const fillLight = new THREE.DirectionalLight(0x80bce0, 1.4);
-  fillLight.position.set(-7, 4, -5);
+
+  const fillLight = new THREE.DirectionalLight(0x7fc7eb, 1.5);
+  fillLight.position.set(-8, 5, -6);
   scene.add(fillLight);
 
+  const rimLight = new THREE.DirectionalLight(0x4cc3ff, 0.8);
+  rimLight.position.set(0, -6, -8);
+  scene.add(rimLight);
+
   // Environment Ground & Grid
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(36, 36), new THREE.MeshStandardMaterial({ color: 0x142b3a, roughness: 1 }));
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(40, 40),
+    new THREE.MeshStandardMaterial({ color: 0x0f2331, roughness: 0.95, metalness: 0.1 })
+  );
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = 0;
   scene.add(ground);
-  const grid = new THREE.GridHelper(16, 32, 0x31546a, 0x203a4d);
+
+  const grid = new THREE.GridHelper(18, 36, 0x27495f, 0x163143);
   grid.position.y = 0.012;
   scene.add(grid);
 
   // Camera Orbit Targets & Spherical Coordinates
   const target = new THREE.Vector3(), homeTarget = new THREE.Vector3();
   let theta = 0.62, phi = 1.04, radius = 12, desiredRadius = 12;
-  let homeTheta = 0.62, homePhi = 1.04, homeRadius = 12, minRadius = 4.5;
-  const maxRadius = 27, minPhi = 0.18, maxPhi = Math.PI - 0.18;
+  let homeTheta = 0.62, homePhi = 1.04, homeRadius = 12, minRadius = 3.5;
+  const maxRadius = 30, minPhi = 0.15, maxPhi = Math.PI - 0.15;
 
   // Hotspots Container
   const hotspotsContainer = document.createElement('div');
@@ -151,10 +171,17 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     reset: document.getElementById('resetView'),
     explore: document.getElementById('exploreMode'),
     focus: document.getElementById('focusMode'),
-    fullscreen: document.getElementById('fullscreenModel')
+    fullscreen: document.getElementById('fullscreenModel'),
+    back: document.getElementById('backToSite')
   };
+  if (!control.back) {
+    control.back = document.getElementById('backToSite');
+  }
 
   const updateToggle = () => {
+    if (control.back) {
+      control.back.style.display = currentModelKey === 'site' ? 'none' : 'inline-flex';
+    }
     if (control.auto) {
       control.auto.setAttribute('aria-pressed', String(autoRotate));
       const b = control.auto.querySelector('b');
@@ -163,11 +190,13 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
       control.auto.classList.toggle('is-active', autoRotate);
     }
     if (control.hotspots) {
-      control.hotspots.setAttribute('aria-pressed', String(showHotspots));
+      const isVisible = showHotspots && currentModelKey === 'site';
+      control.hotspots.setAttribute('aria-pressed', String(isVisible));
       const b = control.hotspots.querySelector('b');
-      if (b) b.textContent = showHotspots ? 'ON' : 'OFF';
-      control.hotspots.title = showHotspots ? 'ซ่อนจุดชี้ระบุอุปกรณ์' : 'แสดงจุดชี้ระบุอุปกรณ์';
-      control.hotspots.classList.toggle('is-active', showHotspots);
+      if (b) b.textContent = isVisible ? 'ON' : 'OFF';
+      control.hotspots.title = isVisible ? 'ซ่อนจุดชี้ระบุอุปกรณ์' : 'แสดงจุดชี้ระบุอุปกรณ์';
+      control.hotspots.classList.toggle('is-active', isVisible);
+      control.hotspots.style.display = currentModelKey === 'site' ? 'inline-flex' : 'none';
     }
   };
 
@@ -179,7 +208,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
 
   const toggleHotspots = value => {
     showHotspots = typeof value === 'boolean' ? value : !showHotspots;
-    hotspotsContainer.style.display = showHotspots ? 'block' : 'none';
+    hotspotsContainer.style.display = (showHotspots && currentModelKey === 'site') ? 'block' : 'none';
     updateToggle();
     requestFrame();
   };
@@ -190,7 +219,8 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     target.copy(homeTarget);
     desiredRadius = homeRadius;
     if (status) {
-      status.textContent = 'โมเดลพร้อมสำรวจ';
+      const meta = solar3DModels[currentModelKey] || solar3DModels.site;
+      status.textContent = meta.isStation ? 'โมเดลสถานีพร้อมสำรวจ' : `โมเดล ${meta.title} พร้อมสำรวจ`;
     }
     requestFrame();
   };
@@ -227,14 +257,15 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     return box;
   };
 
-  // Hotspots Definitions corresponding to actual nodes in LLK_exchange_site.glb
+  // Hotspots Definitions (Exact 1:1 Mapping to MODEL 01 - 03)
   const hotspotsDef = [
     {
       id: 'pv-modules',
+      modelKey: 'pv-array',
       label: '01',
-      name: 'แผง Solar Rooftop',
-      detail: 'แผงโมโนคริสตัลไลน์ 12 แผง กำลังผลิตรวม 6.6 kWp พร้อมแคลมป์ยึดบนหลังคาชุมสาย NT',
-      nodeName: 'Step5_PV_Module_R1_C3',
+      name: solar3DModels['pv-array'].hotspotName,
+      detail: solar3DModels['pv-array'].hotspotDetail,
+      nodeName: solar3DModels['pv-array'].targetNode,
       fallbackPos: new THREE.Vector3(0, 1.85, 0),
       focusRadius: 7.2,
       focusTheta: 0.52,
@@ -242,21 +273,23 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     },
     {
       id: 'structure',
+      modelKey: 'structure',
       label: '02',
-      name: 'โครงสร้างรองรับแผง',
-      detail: 'คาน Rafters, แป Rails และเสา BasePlates อะลูมิเนียมมาตรฐานความปลอดภัยวิศวกรรม',
-      nodeName: 'Step2_Rafters',
+      name: solar3DModels['structure'].hotspotName,
+      detail: solar3DModels['structure'].hotspotDetail,
+      nodeName: solar3DModels['structure'].targetNode,
       fallbackPos: new THREE.Vector3(0, 1.35, -0.4),
       focusRadius: 6.8,
       focusTheta: 1.15,
       focusPhi: 1.08
     },
     {
-      id: 'dc-wiring',
+      id: 'smu01',
+      modelKey: 'smu01',
       label: '03',
-      name: 'ระบบไฟฟ้า & อาคารชุมสาย',
-      detail: 'สายเคเบิล DC Solar Cable เดินท่อเชื่อมต่อไปยังตู้ SMU01 และอินเวอร์เตอร์สถานี',
-      nodeName: 'Step7_DC_Cable',
+      name: solar3DModels['smu01'].hotspotName,
+      detail: solar3DModels['smu01'].hotspotDetail,
+      nodeName: solar3DModels['smu01'].targetNode,
       fallbackPos: new THREE.Vector3(-1.1, 0.9, 0.9),
       focusRadius: 7.5,
       focusTheta: -0.68,
@@ -265,7 +298,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
   ];
 
   const focusHotspot = hotspotId => {
-    const marker = hotspotMarkers.find(m => m.def.id === hotspotId);
+    const marker = hotspotMarkers.find(m => m.def.id === hotspotId || m.def.modelKey === hotspotId);
     if (!marker) return;
     target.copy(marker.pos);
     desiredRadius = marker.def.focusRadius;
@@ -274,42 +307,96 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     if (status) {
       status.textContent = 'โฟกัส: ' + marker.def.name;
     }
+
+    // Highlight card in explorer list
+    document.querySelectorAll('.explorer-card').forEach(card => {
+      const match = card.dataset.modelKey === marker.def.modelKey;
+      card.classList.toggle('is-focused', match);
+    });
+
     requestFrame();
   };
 
-  // Load GLB Model
   const loader = new GLTFLoader();
-  loader.load(
-    modelUrl,
-    gltf => {
+
+  // Dynamic Model Switcher
+  const loadModel = (modelKey) => {
+    const meta = solar3DModels[modelKey] || solar3DModels.site;
+    currentModelKey = meta.key;
+
+    if (status) {
+      status.textContent = `กำลังโหลด ${meta.title}…`;
+      status.classList.remove('is-ready', 'is-error');
+    }
+
+    updateToggle();
+    onModelChanged?.(currentModelKey, meta);
+
+    // Resolve URL taking base into account
+    const rawPath = meta.modelPath;
+    const resolvedUrl = rawPath.startsWith('http')
+      ? rawPath
+      : new URL(rawPath.replace(/^\/+/, ''), document.baseURI).href;
+
+    const applyGltfScene = (gltfScene) => {
       if (disposed) {
-        disposeModelResources(gltf.scene);
+        disposeModelResources(gltfScene);
         return;
       }
+
       try {
-        const model = gltf.scene;
+        // Remove old model frame from scene
+        if (currentModelGroup) {
+          scene.remove(currentModelGroup);
+          // If not in cache, dispose
+          if (!modelCache.has(currentModelKey)) {
+            disposeModelResources(currentModelGroup);
+          }
+          currentModelGroup = null;
+        }
+
+        // Clone scene from cache or use new
+        const model = gltfScene.clone(true);
         model.updateMatrixWorld(true);
 
-        // Hide lattice tower for clearer rooftop focus
-        const tower = model.getObjectByName('Lattice_Tower');
-        if (tower) tower.visible = false;
-        model.updateMatrixWorld(true);
+        // Hide tower on site model if desired
+        if (meta.isStation) {
+          const tower = model.getObjectByName('Lattice_Tower');
+          if (tower) tower.visible = false;
+        }
 
+        // Apply realistic material enhancements if needed
+        model.traverse(child => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            if (child.material) {
+              child.material.side = THREE.DoubleSide;
+              if (child.material.map) child.material.map.anisotropy = 8;
+            }
+          }
+        });
+
+        model.updateMatrixWorld(true);
         const bounds = visibleBounds(model);
         if (bounds.isEmpty()) {
-          disposeModelResources(model);
-          showFailure('GLB โหลดแล้วแต่ไม่พบ Mesh ที่แสดงผลได้', new Error('ไม่พบ visible Mesh ใน Scene Graph'));
+          showFailure('โมเดลโหลดแล้วแต่ไม่พบ Mesh ที่แสดงผลได้', new Error('Empty bounds'));
           return;
         }
 
         const size = bounds.getSize(new THREE.Vector3());
         const center = bounds.getCenter(new THREE.Vector3());
-        const scale = 7 / (Math.max(size.x, size.y, size.z) || 1);
+        const targetDimension = meta.isStation ? 7.2 : 5.8;
+        const maxAxis = Math.max(size.x, size.y, size.z) || 1;
+        const scale = targetDimension / maxAxis;
+
         const frame = new THREE.Group();
         frame.add(model);
         scene.add(frame);
+        currentModelGroup = frame;
+
         frame.scale.setScalar(scale);
-        frame.position.set(-center.x * scale, -bounds.min.y * scale + 0.08, -center.z * scale);
+        frame.position.set(-center.x * scale, -bounds.min.y * scale + 0.05, -center.z * scale);
         frame.updateMatrixWorld(true);
 
         const fitted = visibleBounds(frame);
@@ -317,75 +404,107 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
         const sphere = fitted.getBoundingSphere(new THREE.Sphere());
         fitted.getCenter(homeTarget);
 
-        minRadius = Math.max(4.5, sphere.radius * 1.12);
-        homeRadius = Math.max(minRadius * 1.35, Math.min(18, Math.max(fittedSize.x, fittedSize.y, fittedSize.z) * 1.8));
-        homeTheta = theta = 0.62;
-        homePhi = phi = 1.04;
+        minRadius = Math.max(3.2, sphere.radius * 1.1);
+        homeRadius = Math.max(minRadius * 1.3, Math.min(22, Math.max(fittedSize.x, fittedSize.y, fittedSize.z) * 1.75));
+        homeTheta = theta = meta.isStation ? 0.62 : 0.78;
+        homePhi = phi = meta.isStation ? 1.04 : 1.15;
         radius = desiredRadius = homeRadius;
         target.copy(homeTarget);
 
-        if (control.focus) control.focus.disabled = false;
-
-        // Initialize Hotspots
+        // Handle Hotspots
         hotspotMarkers.length = 0;
         hotspotsContainer.replaceChildren();
 
-        hotspotsDef.forEach(def => {
-          const worldPos = def.fallbackPos.clone();
-          const node = model.getObjectByName(def.nodeName);
-          if (node) {
-            node.updateMatrixWorld(true);
-            node.getWorldPosition(worldPos);
-            worldPos.y += 0.28;
-          }
+        if (meta.isStation) {
+          hotspotsContainer.style.display = showHotspots ? 'block' : 'none';
+          hotspotsDef.forEach(def => {
+            const worldPos = def.fallbackPos.clone();
+            const node = model.getObjectByName(def.nodeName);
+            if (node) {
+              node.updateMatrixWorld(true);
+              node.getWorldPosition(worldPos);
+              worldPos.y += 0.28;
+            }
 
-          const pin = document.createElement('button');
-          pin.className = 'hotspot-pin';
-          pin.type = 'button';
-          pin.setAttribute('aria-label', `${def.name}: ${def.detail}`);
-          pin.innerHTML = `
-            <span class="hotspot-pulse"></span>
-            <span class="hotspot-badge">${def.label}</span>
-            <span class="hotspot-name">${def.name}</span>
-            <div class="hotspot-card" role="tooltip">
-              <b>${def.name}</b>
-              <p>${def.detail}</p>
-              <span class="hotspot-action">คลิกเพื่อโฟกัสมุมมอง ⌖</span>
-            </div>
-          `;
+            const pin = document.createElement('button');
+            pin.className = 'hotspot-pin';
+            pin.type = 'button';
+            pin.setAttribute('aria-label', `${def.name}: ${def.detail}`);
+            pin.innerHTML = `
+              <span class="hotspot-pulse"></span>
+              <span class="hotspot-badge">${def.label}</span>
+              <span class="hotspot-name">${def.name}</span>
+              <div class="hotspot-card" role="tooltip">
+                <b>${def.label} · ${def.name}</b>
+                <p>${def.detail}</p>
+                <div class="hotspot-actions">
+                  <span class="hotspot-action">คลิกเพื่อโฟกัส ⌖</span>
+                  <button class="hotspot-btn-view" type="button" data-model="${def.modelKey}">
+                    เปิดดูโมเดล 3D เจาะลึก ↗
+                  </button>
+                </div>
+              </div>
+            `;
 
-          pin.addEventListener('click', e => {
-            e.stopPropagation();
-            focusHotspot(def.id);
+            pin.addEventListener('click', e => {
+              const viewBtn = e.target.closest('.hotspot-btn-view');
+              if (viewBtn) {
+                e.stopPropagation();
+                loadModel(def.modelKey);
+                return;
+              }
+              focusHotspot(def.id);
+            });
+
+            hotspotsContainer.appendChild(pin);
+            hotspotMarkers.push({ el: pin, pos: worldPos, def });
           });
+        } else {
+          hotspotsContainer.style.display = 'none';
+        }
 
-          hotspotsContainer.appendChild(pin);
-          hotspotMarkers.push({ el: pin, pos: worldPos, def });
-        });
-
-        // Remove loading placeholder cleanly
         stage.querySelector('.stage-placeholder')?.remove();
 
         if (status) {
-          status.textContent = tower ? 'โมเดลพร้อมสำรวจ · ซ่อน Lattice_Tower' : 'โมเดลพร้อมสำรวจ';
+          status.textContent = meta.isStation ? 'โมเดลสถานีพร้อมสำรวจ · หมุนและซูมได้อย่างอิสระ' : `กำลังแสดง: ${meta.badge} · ${meta.title}`;
           status.classList.add('is-ready');
           status.classList.remove('is-error');
         }
 
+        updateToggle();
+        onModelChanged?.(currentModelKey, meta);
         requestFrame();
       } catch (err) {
-        showFailure('โหลด GLB ได้ แต่เตรียม Scene ไม่สำเร็จ', err);
+        showFailure('เตรียม Scene ไม่สำเร็จ', err);
       }
-    },
-    xhr => {
-      if (status && xhr.total) {
-        status.textContent = 'กำลังโหลดโมเดลสถานี NT… ' + Math.round((xhr.loaded / xhr.total) * 100) + '%';
-      }
-    },
-    err => {
-      if (!disposed) showFailure('โหลดโมเดล GLB ไม่สำเร็จ', err);
+    };
+
+    // Check if in cache
+    if (modelCache.has(currentModelKey)) {
+      applyGltfScene(modelCache.get(currentModelKey));
+      return;
     }
-  );
+
+    // Load fresh GLB
+    loader.load(
+      resolvedUrl,
+      gltf => {
+        modelCache.set(currentModelKey, gltf.scene);
+        applyGltfScene(gltf.scene);
+      },
+      xhr => {
+        if (status && xhr.total) {
+          status.textContent = `กำลังโหลด ${meta.title}… ` + Math.round((xhr.loaded / xhr.total) * 100) + '%';
+        }
+      },
+      err => {
+        if (!disposed) showFailure(`โหลดโมเดล ${meta.title} ไม่สำเร็จ`, err);
+      }
+    );
+  };
+
+  // Initial Model Load
+  loadModel('site');
 
   // Pointer & Touch Events
   let lastPointer = null, lastPinchDistance = 0;
@@ -476,6 +595,7 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
   control.reset?.addEventListener('click', resetView, { signal: uiAbort.signal });
   control.explore?.addEventListener('click', setExplore, { signal: uiAbort.signal });
   control.focus?.addEventListener('click', focusModel, { signal: uiAbort.signal });
+  control.back?.addEventListener('click', () => loadModel('site'), { signal: uiAbort.signal });
 
   control.fullscreen?.addEventListener('click', async () => {
     try {
@@ -518,12 +638,13 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
     if (disposed || !visible || document.hidden) return;
     const dt = lastFrame ? Math.min((ts - lastFrame) / 1000, 0.05) : 0;
     lastFrame = ts;
+
     if (autoRotate && !dragging) theta -= dt * 0.12;
     updateCamera(dt || 0.016);
     renderer.render(scene, camera);
 
     // Update Hotspots 2D Screen Positions
-    if (showHotspots && hotspotMarkers.length > 0) {
+    if (showHotspots && currentModelKey === 'site' && hotspotMarkers.length > 0) {
       const w = stage.clientWidth, h = stage.clientHeight;
       for (let i = 0; i < hotspotMarkers.length; i++) {
         const marker = hotspotMarkers[i];
@@ -606,6 +727,10 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
       uiAbort.abort();
       renderer?.domElement?.remove();
       hotspotsContainer?.remove();
+      for (const sceneItem of modelCache.values()) {
+        disposeModelResources(sceneItem);
+      }
+      modelCache.clear();
       disposeModelResources(scene);
       renderer?.renderLists?.dispose();
       renderer?.dispose();
@@ -616,10 +741,12 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl }) 
 
   return {
     cleanup,
+    loadModel,
     focusHotspot,
     resetView,
     setAutoRotate,
-    toggleHotspots
+    toggleHotspots,
+    getCurrentModel: () => currentModelKey
   };
 }
 

@@ -1,0 +1,56 @@
+[
+ {
+  "name": "S1_intro",
+  "start": 1,
+  "end": 180,
+  "cam": "Cam_S1_intro"
+ },
+ {
+  "name": "S2_pv",
+  "start": 181,
+  "end": 420,
+  "cam": "Cam_S2_pv"
+ },
+ {
+  "name": "S3_cabinet",
+  "start": 421,
+  "end": 720,
+  "cam": "Cam_S3_cabinet"
+ },
+ {
+  "name": "S4_battery",
+  "start": 721,
+  "end": 900,
+  "cam": "Cam_S4_battery"
+ },
+ {
+  "name": "S5_mdb",
+  "start": 901,
+  "end": 1080,
+  "cam": "Cam_S5_mdb"
+ },
+ {
+  "name": "S6_generator",
+  "start": 1081,
+  "end": 1320,
+  "cam": "Cam_S6_generator"
+ },
+ {
+  "name": "S7_room",
+  "start": 1321,
+  "end": 1560,
+  "cam": "Cam_S7_room"
+ },
+ {
+  "name": "S8_building",
+  "start": 1561,
+  "end": 1800,
+  "cam": "Cam_S8_building"
+ },
+ {
+  "name": "S9_outro",
+  "start": 1801,
+  "end": 1950,
+  "cam": "Cam_S9_outro"
+ }
+]
