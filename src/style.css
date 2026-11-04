@@ -292,6 +292,205 @@ input,select{color-scheme:dark}
   border-radius: 2px;
 }
 
+/* ==========================================================================
+   Section 3: Knowledge Test & Satisfaction Survey (NT HRD Platform)
+   ========================================================================== */
+.knowledge-test-section {
+  position: relative;
+  isolation: isolate;
+  scroll-margin-top: 86px;
+}
+
+.knowledge-test-card {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: clamp(30px, 4vw, 48px) clamp(24px, 4.5vw, 54px);
+  border: 1px solid #234f6b;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(13, 38, 56, 0.95) 0%, rgba(7, 26, 40, 0.98) 55%, rgba(4, 17, 27, 0.99) 100%),
+              radial-gradient(ellipse at 15% 20%, rgba(246, 196, 0, 0.09), transparent 45%),
+              radial-gradient(ellipse at 85% 80%, rgba(70, 200, 240, 0.08), transparent 50%);
+  box-shadow: 0 24px 70px rgba(2, 10, 18, 0.5), 0 0 45px rgba(70, 200, 240, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-test-card::before {
+  content: '';
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 320px;
+  height: 320px;
+  border: 1px solid rgba(70, 200, 240, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.knowledge-test-visual {
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.test-symbol {
+  font-size: 56px;
+  line-height: 1;
+  color: var(--yellow);
+  text-shadow: 0 0 30px rgba(246, 196, 0, 0.65);
+  filter: drop-shadow(0 4px 14px rgba(246, 196, 0, 0.45));
+}
+
+.test-badge {
+  font: 800 9px/1.2 Inter, sans-serif;
+  letter-spacing: 1px;
+  color: #46c8f0;
+  background: rgba(70, 200, 240, 0.12);
+  border: 1px solid rgba(70, 200, 240, 0.35);
+  padding: 6px 11px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.knowledge-test-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.knowledge-test-body .eyebrow {
+  color: #46c8f0;
+  margin-bottom: 8px;
+}
+
+.knowledge-test-body h2 {
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.35;
+  letter-spacing: -0.6px;
+  margin: 0 0 12px;
+  color: #f4f8fa;
+  font-weight: 800;
+}
+
+.knowledge-test-body p {
+  font-size: 13px;
+  line-height: 1.95;
+  color: #b3c7d3;
+  margin: 0 0 24px;
+  max-width: 780px;
+}
+
+.knowledge-test-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.knowledge-test-actions .btn {
+  padding: 13px 22px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.knowledge-test-actions .btn.btn-yellow {
+  background: #f6c400;
+  color: #071c2c;
+  border: 1px solid #ffe153;
+  box-shadow: 0 8px 24px rgba(246, 196, 0, 0.28);
+}
+
+.knowledge-test-actions .btn.btn-yellow:hover {
+  background: #ffd92e;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(246, 196, 0, 0.42);
+}
+
+.knowledge-test-actions .btn.btn-glass {
+  background: rgba(255, 255, 255, 0.05);
+  color: #eaf3f7;
+  border: 1px solid rgba(70, 200, 240, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.knowledge-test-actions .btn.btn-glass:hover {
+  background: rgba(70, 200, 240, 0.16);
+  border-color: #46c8f0;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(70, 200, 240, 0.25);
+}
+
+.knowledge-test-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #8da4b2;
+  border-top: 1px solid rgba(34, 75, 100, 0.55);
+  padding-top: 14px;
+}
+
+.knowledge-test-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.knowledge-test-meta span i {
+  font-style: normal;
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(70, 200, 240, 0.14);
+  color: #46c8f0;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 820px) {
+  .knowledge-test-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 26px 20px;
+  }
+  .knowledge-test-visual {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+  .test-symbol {
+    font-size: 38px;
+  }
+  .knowledge-test-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .knowledge-test-actions .btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .knowledge-test-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
 /* Calculator Section Wrapper */
 .calculator-wrapper, .offgrid-wrapper, .quiz-wrapper {
   margin-bottom: 70px;

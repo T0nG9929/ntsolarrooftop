@@ -116,7 +116,7 @@ function render() {
 
     <!-- Main Platform Shell -->
     <div id="academyContent">
-      <!-- Unified Topbar Navigation (Phase 4 Menu: Home, Articles, Solar Calculator, Solar Learning Lab, 3D Learning, Knowledge Quiz) -->
+      <!-- Unified Topbar Navigation -->
       <header class="topbar">
         <a class="brand" href="#home" aria-label="NT Solar Academy หน้าแรก">
           <span class="brand-mark">NT</span>
@@ -124,11 +124,12 @@ function render() {
         </a>
         <nav class="desktop-nav" aria-label="เมนูหลัก">
           <a href="#home">Home</a>
-          <a href="#articles">Articles</a>
-          <a href="#calculator">Solar Calculator</a>
           <a href="#learning-lab">Solar Learning Lab</a>
           <a href="#3d-learning">3D Learning</a>
-          <a href="#quiz">Knowledge Quiz</a>
+          <a href="#quiz">Knowledge Test</a>
+          <a href="#articles">Articles</a>
+          <a href="#calculator">Solar Calculator</a>
+          <a href="#offgrid">Battery Design</a>
         </nav>
         <button class="menu-button" id="mobileMenu" aria-label="เปิดเมนูมือถือ">☰</button>
         <a class="header-cta" href="#calculator">คำนวณโซลาร์ <span>⚡</span></a>
@@ -142,14 +143,14 @@ function render() {
             <h1>เรียนรู้พลังงานแสงอาทิตย์<br><span>จากพื้นฐานสู่การคำนวณจริง</span></h1>
             <p class="hero-lead">ศูนย์กลางการเรียนรู้ระบบ Solar Rooftop สำหรับบุคลากรและผู้สนใจ ครอบคลุมเครื่องมือคำนวณวิศวกรรมเบื้องต้น 12 โมดูลบทเรียน และแบบจำลองสถานี 3 มิติ AR/VR</p>
             <div class="hero-actions">
-              <a class="btn btn-dark" href="#calculator">เริ่มคำนวณ Solar Rooftop <span>↓</span></a>
-              <a class="btn btn-outline" href="#learning-lab">สำรวจ 12 บทเรียน <span>→</span></a>
+              <a class="btn btn-dark" href="#learning-lab">เริ่มเส้นทางการเรียนรู้ <span>↓</span></a>
+              <a class="btn btn-yellow" href="#calculator">คำนวณขนาดโซลาร์ <span>⚡</span></a>
               <a class="btn btn-outline" href="#3d-learning">3D Learning Lab <span>◇</span></a>
             </div>
             <div class="hero-meta">
-              <span><i class="meta-check">✓</i> คำนวณตามมาตรฐานวิศวกรรม</span>
               <span><i class="meta-check">✓</i> 12 โมดูลพร้อมเอกสาร PDF</span>
               <span><i class="meta-check">✓</i> 3D WebGL &amp; AR พร้อมใช้งาน</span>
+              <span><i class="meta-check">✓</i> คำนวณตามมาตรฐานวิศวกรรม</span>
             </div>
           </div>
           <div class="hero-art hero-video-art" aria-label="วิดีโอระบบ Solar Rooftop">
@@ -173,13 +174,8 @@ function render() {
           </div>
         </section>
 
-        <!-- 2. Solar Calculator Section (Native Module) -->
-        <section class="wrap" id="calculator" style="padding-top: 10px; margin-bottom: 80px;">
-          <div id="calculatorMount"></div>
-        </section>
-
-        <!-- 3. Solar Learning Lab Section (12 Modules) -->
-        <section class="learning-section wrap" id="learning-lab">
+        <!-- Section 1: Solar Learning Lab (Modules 01–11) -->
+        <section class="learning-section wrap" id="learning-lab" style="padding-top: 30px; margin-bottom: 70px;">
           <div class="section-heading">
             <div>
               <div class="eyebrow">YOUR LEARNING JOURNEY</div>
@@ -201,21 +197,40 @@ function render() {
           </div>
         </section>
 
-        <!-- 4. 3D Learning Section (Module 12 WebGL Viewer) -->
+        <!-- Section 2: NT Solar Rooftop — Interactive 3D Featured — Module 12 -->
         ${module12Section()}
 
-        <!-- 5. Knowledge Quiz Section (Native Module) -->
-        <section class="wrap" id="quiz" style="margin-bottom: 80px; padding-top: 20px;">
-          <div id="quizMount"></div>
+        <!-- Section 3: Solar Rooftop Knowledge Test & Satisfaction Survey (NT HRD Platform) -->
+        <section class="knowledge-test-section wrap" id="quiz" style="margin-bottom: 70px; padding-top: 30px;">
+          <div class="knowledge-test-card">
+            <div class="knowledge-test-visual" aria-hidden="true">
+              <span class="test-symbol">✦</span>
+              <span class="test-badge">NT HRD PLATFORM</span>
+            </div>
+            <div class="knowledge-test-body">
+              <div class="eyebrow eyebrow-light"><span class="eyebrow-dot"></span> EVALUATION &amp; FEEDBACK · NT HRD</div>
+              <h2>แบบทดสอบความเข้าใจและแบบสอบถามความพึงพอใจ</h2>
+              <p>
+                ประเมินผลสัมฤทธิ์ทางการเรียนรู้หลังจากศึกษาโมดูล 01–12 ผ่านระบบพัฒนาทรัพยากรบุคคล (HRD / KM4U) ของ NT พร้อมร่วมทำแบบสอบถามเพื่อนำข้อคิดเห็นไปพัฒนาและปรับปรุงแพลตฟอร์มการเรียนรู้
+              </p>
+              <div class="knowledge-test-actions">
+                <a class="btn btn-yellow" href="https://km4u.ntplc.co.th/content/6aeab958e4a1dc09ee891a31" target="_blank" rel="noopener noreferrer">
+                  <span>แบบทดสอบความเข้าใจ Solar Rooftop</span> <span>↗</span>
+                </a>
+                <a class="btn btn-glass" href="https://km4u.ntplc.co.th/content/6aeabbc3e4a1dc09ee891cab" target="_blank" rel="noopener noreferrer">
+                  <span>แบบสอบถามความพึงพอใจการใช้งานระบบ</span> <span>↗</span>
+                </a>
+              </div>
+              <div class="knowledge-test-meta">
+                <span><i>ℹ</i> ลิงก์เชื่อมต่อไปยังระบบ NT KM4U โดยตรง (เปิดในแท็บใหม่)</span>
+                <span><i>✓</i> ข้อมูลการทดสอบจะถูกบันทึกในระบบพัฒนาบุคลากร NT</span>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <!-- 6. Standalone Off-Grid Battery Lab (Native Sub-tool) -->
-        <section class="wrap" id="offgrid" style="margin-bottom: 80px; padding-top: 20px;">
-          <div id="offgridMount"></div>
-        </section>
-
-        <!-- 7. Articles & Knowledge Library Section -->
-        <section class="resources-section wrap" id="articles">
+        <!-- Section 4: Learn Beyond the Lessons — Articles & Knowledge Library -->
+        <section class="resources-section wrap" id="articles" style="padding-top: 30px; margin-bottom: 70px;">
           <div class="section-heading">
             <div>
               <div class="eyebrow">LEARN BEYOND THE LESSONS</div>
@@ -253,7 +268,7 @@ function render() {
         </section>
 
         <!-- Next Step / AR Call to Action -->
-        <section class="next-step wrap">
+        <section class="next-step wrap" style="margin-bottom: 80px;">
           <div class="next-icon">◇</div>
           <div>
             <div class="eyebrow">THE NEXT LEARNING EXPERIENCE</div>
@@ -261,6 +276,16 @@ function render() {
             <p>สำรวจโมเดลสถานี NT บนเว็บไซต์ แล้วเปิด LLK_SolarAR บนโทรศัพท์มือถือเพื่อทดลองประสบการณ์ Augmented Reality</p>
           </div>
           <a class="btn btn-dark" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">เปิด LLK_SolarAR ↗</a>
+        </section>
+
+        <!-- Section 5: Preliminary Solar PV Sizing Engine -->
+        <section class="wrap" id="calculator" style="padding-top: 20px; margin-bottom: 80px;">
+          <div id="calculatorMount"></div>
+        </section>
+
+        <!-- Section 6: Standalone Battery Storage Design -->
+        <section class="wrap" id="offgrid" style="margin-bottom: 80px; padding-top: 20px;">
+          <div id="offgridMount"></div>
         </section>
       </main>
 
@@ -298,12 +323,6 @@ function render() {
   if (offgridMount) {
     offgridMount.innerHTML = getOffgridTemplate();
     offgridInstance = new OffgridController(offgridMount);
-  }
-
-  const quizMount = $('#quizMount');
-  if (quizMount) {
-    quizMount.innerHTML = getQuizTemplate();
-    quizInstance = new QuizController(quizMount);
   }
 
   bindAcademyEvents();

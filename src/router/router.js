@@ -31,7 +31,10 @@ export class AppRouter {
     if (raw === '' || raw === 'welcome' || raw === 'welcomeScreen') routeKey = 'home';
     else if (raw === 'path' || raw === 'learning' || raw === 'modules') routeKey = 'learning-lab';
     else if (raw === 'module12' || raw === '3d' || raw === '3d-explorer') routeKey = '3d-learning';
-    else if (raw === 'calc') routeKey = 'calculator';
+    else if (raw === 'test' || raw === 'exam' || raw === 'hrd' || raw === 'survey') routeKey = 'quiz';
+    else if (raw === 'resources' || raw === 'library') routeKey = 'articles';
+    else if (raw === 'calc' || raw === 'sizing') routeKey = 'calculator';
+    else if (raw === 'battery' || raw === 'storage') routeKey = 'offgrid';
 
     // Update active nav class
     document.querySelectorAll('.desktop-nav a').forEach(a => {
@@ -40,9 +43,10 @@ export class AppRouter {
         (routeKey === 'home' && hrefHash === 'home') ||
         (routeKey === 'learning-lab' && (hrefHash === 'learning-lab' || hrefHash === 'path')) ||
         (routeKey === '3d-learning' && (hrefHash === '3d-learning' || hrefHash === 'module12')) ||
-        (routeKey === 'calculator' && hrefHash === 'calculator') ||
-        (routeKey === 'articles' && hrefHash === 'articles') ||
-        (routeKey === 'quiz' && hrefHash === 'quiz');
+        (routeKey === 'calculator' && (hrefHash === 'calculator' || hrefHash === 'calc')) ||
+        (routeKey === 'articles' && (hrefHash === 'articles' || hrefHash === 'resources')) ||
+        (routeKey === 'quiz' && (hrefHash === 'quiz' || hrefHash === 'test')) ||
+        (routeKey === 'offgrid' && (hrefHash === 'offgrid' || hrefHash === 'battery'));
       a.classList.toggle('nav-active', isActive);
     });
 
