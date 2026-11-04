@@ -69,12 +69,18 @@ function render() {
             </div>
           </div>
         </div>
-        <div class="welcome-visual welcome-video-visual">
-          <iframe class="welcome-video" src="https://www.youtube-nocookie.com/embed/IGUFcS4UrLo?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=IGUFcS4UrLo&amp;controls=0&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" title="วิดีโอภาพบรรยากาศสถานี NT Solar Rooftop" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" aria-hidden="true" tabindex="-1"></iframe>
+        <div class="welcome-visual welcome-video-visual" aria-label="Featured Video: NT Solar Rooftop สถานีจริง">
+          <iframe class="welcome-video" src="https://www.youtube-nocookie.com/embed/TdkCg_ggN5o?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=TdkCg_ggN5o&amp;controls=0&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" title="วิดีโอภาพบรรยากาศสถานี NT Solar Rooftop" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" aria-hidden="true" tabindex="-1"></iframe>
           <div class="welcome-photo-shade"></div>
-          <div class="welcome-chip chip-panels"><b>NT SOLAR ROOFTOP</b><small>REAL SITE · LEARNING CONTEXT</small></div>
-          <a class="welcome-chip chip-3d welcome-ar-chip" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer"><b>OPEN LLK_SolarAR ↗</b><small>3D MODEL · AUGMENTED REALITY</small></a>
-          <div class="welcome-visual-caption">LEARN FROM A REAL NT SOLAR ROOFTOP SITE</div>
+          <div class="welcome-chip chip-panels">
+            <b><span class="video-live-dot"></span>NT SOLAR ROOFTOP</b>
+            <small>REAL SITE · LEARNING CONTEXT</small>
+          </div>
+          <a class="welcome-chip chip-3d welcome-ar-chip" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">
+            <b>OPEN LLK_SolarAR ↗</b>
+            <small>3D MODEL · AUGMENTED REALITY</small>
+          </a>
+          <div class="welcome-visual-caption"><span class="caption-dot"></span>LEARN FROM A REAL NT SOLAR ROOFTOP SITE</div>
         </div>
       </div>
       <div class="welcome-info-grid">
@@ -128,12 +134,18 @@ function render() {
               <span><i class="meta-check">✓</i> คำนวณตามมาตรฐานวิศวกรรม</span>
             </div>
           </div>
-          <div class="hero-art hero-video-art" aria-label="วิดีโอระบบ Solar Rooftop">
-            <iframe class="hero-video" src="https://www.youtube-nocookie.com/embed/s_gA25jyk_c?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=s_gA25jyk_c&amp;controls=0&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" title="วิดีโอระบบ Solar Rooftop" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" aria-hidden="true" tabindex="-1"></iframe>
+          <div class="hero-art hero-video-art" aria-label="Featured Video: ระบบ Solar Rooftop พลังงานแสงอาทิตย์">
+            <iframe class="hero-video" src="https://www.youtube-nocookie.com/embed/B2DFtpRicgY?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=B2DFtpRicgY&amp;controls=0&amp;rel=0&amp;playsinline=1&amp;modestbranding=1" title="วิดีโอระบบ Solar Rooftop" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" aria-hidden="true" tabindex="-1"></iframe>
             <div class="hero-video-shade"></div>
-            <div class="float-tag tag-energy"><span class="tag-icon">ϟ</span><span><b>Solar Energy</b><small>Clean · Smart · Future</small></span></div>
-            <div class="float-tag tag-3d"><span class="tag-cube">◇</span><span><b>3D Learning Lab</b><small>AR / VR Ready</small></span></div>
-            <div class="hero-art-label">POWERING KNOWLEDGE FOR A SUSTAINABLE FUTURE</div>
+            <div class="float-tag tag-energy">
+              <span class="tag-icon">ϟ</span>
+              <span><b>Solar Energy</b><small>Clean · Smart · Future</small></span>
+            </div>
+            <div class="float-tag tag-3d">
+              <span class="tag-cube">◇</span>
+              <span><b>3D Learning Lab</b><small>AR / VR Ready</small></span>
+            </div>
+            <div class="hero-art-label"><span class="hero-label-dot"></span>POWERING KNOWLEDGE FOR A SUSTAINABLE FUTURE</div>
           </div>
         </section>
 
