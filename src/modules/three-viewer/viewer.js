@@ -79,11 +79,11 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl, on
     reloadBtn.addEventListener('click', () => loadModel('site'));
 
     const arLink = document.createElement('a');
-    arLink.href = 'https://solar-ar-llk.netlify.app/';
+    arLink.href = 'https://ar-outdoor.netlify.app/';
     arLink.target = '_blank';
     arLink.rel = 'noopener noreferrer';
     arLink.className = 'btn btn-glass';
-    arLink.textContent = 'เปิด LLK_SolarAR ↗';
+    arLink.textContent = 'สำรวจชุมสายและระบบ Solar Rooftop ↗';
 
     actions.append(reloadBtn, arLink);
     box.append(icon, heading, message, pathEl, hint, actions);

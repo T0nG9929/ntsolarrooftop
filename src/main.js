@@ -28,6 +28,136 @@ let quizInstance = null;
 
 const categories = ['ทั้งหมด', ...new Set(modules.slice(0, 11).map(m => m.category || 'บทเรียน'))];
 
+export const arExplorerMenuItems = [
+  {
+    key: 'site-overview',
+    number: '01',
+    english: 'MENU 01 — SITE OVERVIEW',
+    thai: 'ภาพรวมชุมสายลาดหลุมแก้ว',
+    description: 'สำรวจภาพรวมชุมสายโทรศัพท์ลาดหลุมแก้วและระบบ Solar Rooftop ผ่านโมเดล 3 มิติ พร้อมประสบการณ์ AR',
+    url: 'https://ar-outdoor.netlify.app/',
+    badge: '3D SITE · AR VIEW',
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 21h18"/>
+      <path d="M5 21V7l8-4v18"/>
+      <path d="M19 21V11l-6-4"/>
+      <line x1="9" y1="9" x2="10" y2="9"/>
+      <line x1="9" y1="13" x2="10" y2="13"/>
+      <line x1="9" y1="17" x2="10" y2="17"/>
+      <circle cx="17" cy="5" r="2"/>
+    </svg>`
+  },
+  {
+    key: 'solar-pv-panels',
+    number: '02',
+    english: 'MENU 02 — SOLAR PV PANELS',
+    thai: 'แผงโซลาร์เซลล์',
+    description: 'สำรวจโมเดลแผงโซลาร์เซลล์ผ่านประสบการณ์ 3D และ AR',
+    url: 'https://ar-pv.netlify.app/',
+    badge: 'PV ARRAY · 3D/AR',
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="9" y1="4" x2="9" y2="20"/>
+      <line x1="15" y1="4" x2="15" y2="20"/>
+    </svg>`
+  },
+  {
+    key: 'solar-structure',
+    number: '03',
+    english: 'MENU 03 — SOLAR STRUCTURE',
+    thai: 'โครงสร้างติดตั้งโซลาร์เซลล์',
+    description: 'สำรวจโครงสร้างรองรับและส่วนประกอบสำหรับติดตั้งแผงโซลาร์เซลล์',
+    url: 'https://ar-structure.netlify.app/',
+    badge: 'STRUCTURE · 3D/AR',
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 18h20"/>
+      <path d="M4 18l3-10h10l3 10"/>
+      <line x1="9" y1="8" x2="9" y2="18"/>
+      <line x1="15" y1="8" x2="15" y2="18"/>
+      <line x1="7" y1="13" x2="17" y2="13"/>
+    </svg>`
+  },
+  {
+    key: 'solar-control-cabinet',
+    number: '04',
+    english: 'MENU 04 — SOLAR CONTROL CABINET',
+    thai: 'ตู้ควบคุมระบบโซลาร์',
+    description: 'สำรวจตู้ควบคุมและอุปกรณ์ภายในระบบ Solar Rooftop',
+    url: 'https://ar-control-cabinet.netlify.app/',
+    badge: 'CABINET · 3D/AR',
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2"/>
+      <line x1="4" y1="10" x2="20" y2="10"/>
+      <circle cx="8" cy="6" r="1.5" fill="currentColor"/>
+      <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+      <line x1="16" y1="5.5" x2="16" y2="6.5"/>
+      <line x1="12" y1="14" x2="12" y2="18"/>
+      <line x1="10" y1="16" x2="14" y2="16"/>
+    </svg>`
+  }
+];
+
+function renderArMegaMenuPanel(panelId) {
+  const cardsHtml = arExplorerMenuItems.map(item => `
+    <a class="ar-menu-card" href="${item.url}" target="_blank" rel="noopener noreferrer" aria-label="${item.english}: ${item.thai}">
+      <div class="ar-card-top">
+        <div class="ar-card-icon-box" aria-hidden="true">
+          ${item.icon}
+        </div>
+        <div class="ar-card-meta">
+          <span class="ar-card-number">${item.number}</span>
+          <span class="ar-card-badge">${item.badge}</span>
+        </div>
+      </div>
+      <div class="ar-card-body">
+        <span class="ar-card-english">${item.english}</span>
+        <h4 class="ar-card-thai">${item.thai}</h4>
+        <p class="ar-card-desc">${item.description}</p>
+      </div>
+      <div class="ar-card-footer">
+        <span class="ar-card-link-text">เปิดประสบการณ์ AR / 3D</span>
+        <span class="ar-card-arrow" aria-hidden="true">↗</span>
+      </div>
+    </a>
+  `).join('');
+
+  return `
+    <div class="ar-megamenu-panel" id="${panelId}" role="region" aria-label="เมนูสำรวจชุมสายและระบบ Solar Rooftop 3D / AR" aria-hidden="true">
+      <div class="ar-megamenu-inner">
+        <div class="ar-megamenu-header">
+          <div class="ar-megamenu-header-copy">
+            <div class="ar-megamenu-badge">
+              <span class="ar-pulse-dot"></span>
+              <span>3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING</span>
+            </div>
+            <h3 class="ar-megamenu-heading">สำรวจชุมสายและระบบ Solar Rooftop</h3>
+            <p class="ar-megamenu-desc">เลือกโมเดลและส่วนประกอบที่ต้องการศึกษาเพื่อเปิดประสบการณ์ 3D Interactive และ Augmented Reality (WebAR) ผ่านเว็บเบราว์เซอร์หรือกล้องสมาร์ตโฟน</p>
+          </div>
+          <button class="ar-megamenu-close-btn" type="button" data-close-panel="${panelId}" aria-label="ปิดเมนูสำรวจ 3D/AR">
+            <span class="close-icon" aria-hidden="true">✕</span>
+            <span>ปิดเมนู</span>
+          </button>
+        </div>
+
+        <div class="ar-megamenu-grid">
+          ${cardsHtml}
+        </div>
+
+        <div class="ar-megamenu-footer">
+          <div class="ar-megamenu-tip">
+            <span class="ar-tip-icon" aria-hidden="true">ℹ</span>
+            <span><b>คำแนะนำ:</b> แต่ละรายการจะเปิดระบบ WebAR / 3D บน Netlify ในแท็บใหม่ สามารถใช้งานได้ทันทีทั้งบนคอมพิวเตอร์และกล้องโทรศัพท์มือถือ</span>
+          </div>
+          <div class="ar-megamenu-quick-actions">
+            <span class="ar-item-counter">4 INTERACTIVE LABS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function moduleIcon(id) {
   return ['▦', '☀', 'ϟ', '⌁', '⇄', '◈', '▰', '⏻', '⌂', '🔧', '↻', '◇'][id - 1] || '•';
 }
@@ -59,7 +189,24 @@ function render() {
           <div class="welcome-actions">
             <button class="btn btn-dark" id="enterAcademy">เข้าสู่แพลตฟอร์มการเรียนรู้ <span>↗</span></button>
             <a class="btn btn-yellow" href="#calculator">คำนวณขนาดโซลาร์ <span>⚡</span></a>
-            <a class="btn btn-ar-welcome" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">เปิด LLK_SolarAR <span>↗</span></a>
+            <button class="btn btn-yellow btn-ar-megamenu-trigger btn-ar-welcome" id="welcomeArTrigger" type="button" aria-expanded="false" aria-controls="welcomeArMegaMenu" aria-haspopup="true" aria-label="สำรวจชุมสายและระบบ Solar Rooftop: 3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING">
+              <span class="ar-trigger-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </span>
+              <span class="ar-trigger-content">
+                <span class="ar-trigger-title">สำรวจชุมสายและระบบ Solar Rooftop</span>
+                <span class="ar-trigger-subtitle">3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING</span>
+              </span>
+              <span class="ar-trigger-chevron" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
           </div>
           <div class="welcome-purpose">
             <span class="purpose-icon">◎</span>
@@ -76,13 +223,14 @@ function render() {
             <b><span class="video-live-dot"></span>NT SOLAR ROOFTOP</b>
             <small>REAL SITE · LEARNING CONTEXT</small>
           </div>
-          <a class="welcome-chip chip-3d welcome-ar-chip" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">
-            <b>OPEN LLK_SolarAR ↗</b>
+          <button class="welcome-chip chip-3d welcome-ar-chip" id="welcomeArChipTrigger" type="button" aria-label="สำรวจชุมสายและระบบ Solar Rooftop 3D / AR">
+            <b>สำรวจชุมสายและระบบ Solar ▾</b>
             <small>3D MODEL · AUGMENTED REALITY</small>
-          </a>
+          </button>
           <div class="welcome-visual-caption"><span class="caption-dot"></span>LEARN FROM A REAL NT SOLAR ROOFTOP SITE</div>
         </div>
       </div>
+      ${renderArMegaMenuPanel('welcomeArMegaMenu')}
       <div class="welcome-info-grid">
         <article><span class="welcome-info-icon">⚡</span><div><h2>Solar Calculator</h2><p>คำนวณขนาดแผง อินเวอร์เตอร์ พื้นที่หลังคา และจุดคืนทุน 25 ปี</p></div></article>
         <article><span class="welcome-info-icon">⌘</span><div><h2>12 โมดูลการเรียนรู้</h2><p>เจาะลึกอุปกรณ์ การออกแบบ การต่อวงจร และการบำรุงรักษา</p></div></article>
@@ -260,9 +408,26 @@ function render() {
           <div>
             <div class="eyebrow">THE NEXT LEARNING EXPERIENCE</div>
             <h2>จากโมเดล 3D สู่ประสบการณ์ AR</h2>
-            <p>สำรวจโมเดลสถานี NT บนเว็บไซต์ แล้วเปิด LLK_SolarAR บนโทรศัพท์มือถือเพื่อทดลองประสบการณ์ Augmented Reality</p>
+            <p>สำรวจโมเดลสถานี NT บนเว็บไซต์ และเปิดระบบเพื่อทดลองประสบการณ์ Augmented Reality (WebAR)</p>
           </div>
-          <a class="btn btn-dark" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">เปิด LLK_SolarAR ↗</a>
+          <button class="btn btn-yellow btn-ar-megamenu-trigger" id="nextStepArTrigger" type="button" aria-label="สำรวจชุมสายและระบบ Solar Rooftop: 3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING">
+            <span class="ar-trigger-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </span>
+            <span class="ar-trigger-content">
+              <span class="ar-trigger-title">สำรวจชุมสายและระบบ Solar Rooftop</span>
+              <span class="ar-trigger-subtitle">3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING</span>
+            </span>
+            <span class="ar-trigger-chevron" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
         </section>
 
         <!-- Section 5: Preliminary Solar PV Sizing Engine -->
@@ -381,10 +546,29 @@ function module12Section() {
             <p class="module12-lead">สำรวจโมเดลสถานี NT ผ่านการหมุนและซูมอย่างอิสระ ใช้ปุ่ม Focus Model เพื่อจัดโมเดลให้อยู่กลางมุมมอง หรือเลือกโมเดลเจาะลึกจากรายการด้านขวา</p>
           </div>
           <div class="module12-intro-actions">
-            <a class="btn btn-yellow" href="https://solar-ar-llk.netlify.app/" target="_blank" rel="noopener noreferrer">เปิด LLK_SolarAR <span>↗</span></a>
+            <button class="btn btn-yellow btn-ar-megamenu-trigger" id="module12ArTrigger" type="button" aria-expanded="false" aria-controls="module12ArMegaMenu" aria-haspopup="true" aria-label="สำรวจชุมสายและระบบ Solar Rooftop: 3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING">
+              <span class="ar-trigger-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </span>
+              <span class="ar-trigger-content">
+                <span class="ar-trigger-title">สำรวจชุมสายและระบบ Solar Rooftop</span>
+                <span class="ar-trigger-subtitle">3D MODEL · AUGMENTED REALITY · INTERACTIVE LEARNING</span>
+              </span>
+              <span class="ar-trigger-chevron" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
             <button class="btn btn-glass" id="openLesson12">เป้าหมายการเรียนรู้ <span>↗</span></button>
           </div>
         </header>
+
+        ${renderArMegaMenuPanel('module12ArMegaMenu')}
 
         <div class="module12-workspace">
           <div class="module11-visual module12-visual">
@@ -542,6 +726,105 @@ function bindAcademyEvents() {
       $('.desktop-nav')?.classList.remove('nav-open');
     });
   });
+
+  // AR & 3D Interactive Explorer Mega Menu Triggers
+  const module12Trigger = $('#module12ArTrigger');
+  module12Trigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMegaMenu('module12ArMegaMenu', module12Trigger);
+  });
+
+  const welcomeTrigger = $('#welcomeArTrigger');
+  welcomeTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMegaMenu('welcomeArMegaMenu', welcomeTrigger);
+  });
+
+  const welcomeChipTrigger = $('#welcomeArChipTrigger');
+  welcomeChipTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMegaMenu('welcomeArMegaMenu', welcomeTrigger, true);
+    document.getElementById('welcomeArMegaMenu')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  const nextStepTrigger = $('#nextStepArTrigger');
+  nextStepTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const m12 = document.getElementById('3d-learning') || document.getElementById('module12');
+    if (m12) {
+      m12.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => {
+        toggleMegaMenu('module12ArMegaMenu', module12Trigger, true);
+      }, 420);
+    }
+  });
+
+  // Close buttons inside panels
+  document.querySelectorAll('[data-close-panel]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const panelId = btn.getAttribute('data-close-panel');
+      const trigger = document.querySelector(`[aria-controls="${panelId}"]`);
+      toggleMegaMenu(panelId, trigger, false);
+      trigger?.focus();
+    });
+  });
+
+  // Click outside to close
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.ar-megamenu-panel') && !e.target.closest('.btn-ar-megamenu-trigger') && !e.target.closest('.welcome-ar-chip')) {
+      document.querySelectorAll('.ar-megamenu-panel.is-open').forEach(p => {
+        p.classList.remove('is-open');
+        p.setAttribute('aria-hidden', 'true');
+        const trig = document.querySelector(`[aria-controls="${p.id}"]`);
+        trig?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  // Keyboard Escape to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const openPanel = document.querySelector('.ar-megamenu-panel.is-open');
+      if (openPanel) {
+        const trigger = document.querySelector(`[aria-controls="${openPanel.id}"]`);
+        toggleMegaMenu(openPanel.id, trigger, false);
+        trigger?.focus();
+      }
+    }
+  });
+}
+
+function toggleMegaMenu(panelId, triggerEl, forceState) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const isCurrentlyOpen = panel.classList.contains('is-open');
+  const willOpen = forceState !== undefined ? forceState : !isCurrentlyOpen;
+
+  if (willOpen) {
+    document.querySelectorAll('.ar-megamenu-panel.is-open').forEach(p => {
+      if (p !== panel) {
+        p.classList.remove('is-open');
+        p.setAttribute('aria-hidden', 'true');
+        const trig = document.querySelector(`[aria-controls="${p.id}"]`);
+        trig?.setAttribute('aria-expanded', 'false');
+      }
+    });
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    triggerEl?.setAttribute('aria-expanded', 'true');
+
+    setTimeout(() => {
+      const rect = panel.getBoundingClientRect();
+      if (rect.top < 70) {
+        window.scrollBy({ top: rect.top - 80, behavior: 'smooth' });
+      }
+    }, 100);
+  } else {
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    triggerEl?.setAttribute('aria-expanded', 'false');
+  }
 }
 
 function filterModules() {
