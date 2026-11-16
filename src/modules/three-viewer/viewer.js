@@ -365,15 +365,63 @@ export function initThreeViewer({ stage, status, controls, section, modelUrl, on
           if (tower) tower.visible = false;
         }
 
-        // Apply realistic material enhancements if needed
+        // Calibrate lighting for component views vs station site
+        if (currentModelKey === 'pv-array') {
+          keyLight.intensity = 2.2;
+          hemiLight.intensity = 1.35;
+          fillLight.intensity = 1.0;
+          rimLight.intensity = 0.55;
+          renderer.toneMappingExposure = 1.02;
+        } else {
+          keyLight.intensity = 2.9;
+          hemiLight.intensity = 2.2;
+          fillLight.intensity = 1.5;
+          rimLight.intensity = 0.8;
+          renderer.toneMappingExposure = 1.15;
+        }
+
+        // Apply realistic material enhancements & color space corrections
         model.traverse(child => {
           if (child.isMesh) {
             child.castShadow = true;
             child.receiveShadow = true;
-            if (child.material) {
-              child.material.side = THREE.DoubleSide;
-              if (child.material.map) child.material.map.anisotropy = 8;
-            }
+            const mats = Array.isArray(child.material) ? child.material : (child.material ? [child.material] : []);
+            mats.forEach(mat => {
+              mat.side = THREE.DoubleSide;
+              if (mat.map) {
+                mat.map.colorSpace = THREE.SRGBColorSpace;
+                mat.map.anisotropy = 8;
+                mat.map.needsUpdate = true;
+              }
+              // Specific material tuning for MODEL 01 (PV Array) to match Blender original appearance
+              if (currentModelKey === 'pv-array') {
+                if (mat.name === 'PV_Module_Glass' || (mat.map && mat.name !== 'PV_Frame_Aluminium')) {
+                  // Monocrystalline silicon PV cell: deep black with crisp grid lines & busbars
+                  mat.roughness = 0.20;
+                  mat.metalness = 0.05;
+                  mat.color.setHex(0xffffff);
+                  mat.needsUpdate = true;
+                } else if (mat.name === 'PV_Frame_Aluminium') {
+                  // Anodized silver aluminum framing
+                  mat.color.setHex(0xd0d5da);
+                  mat.metalness = 0.88;
+                  mat.roughness = 0.28;
+                  mat.needsUpdate = true;
+                } else if (mat.name === 'Cable_Black') {
+                  // DC solar cable (matte dark charcoal/black)
+                  mat.color.setHex(0x151719);
+                  mat.metalness = 0.0;
+                  mat.roughness = 0.65;
+                  mat.needsUpdate = true;
+                } else if (mat.name === 'Junction_Box') {
+                  // Junction box
+                  mat.color.setHex(0xd4d4d0);
+                  mat.metalness = 0.05;
+                  mat.roughness = 0.45;
+                  mat.needsUpdate = true;
+                }
+              }
+            });
           }
         });
 
